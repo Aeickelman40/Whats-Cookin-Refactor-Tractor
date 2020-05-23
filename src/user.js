@@ -1,3 +1,4 @@
+
 class User {
   constructor(id, name, pantry) {
     this.id = id;
@@ -35,4 +36,5 @@ class User {
 }
 
 
-export default User;
+  export default User;
+

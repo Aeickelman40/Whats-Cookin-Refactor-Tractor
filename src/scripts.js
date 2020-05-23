@@ -10,10 +10,12 @@ import Recipe from './recipe';
 import User from './user';
 import Cookbook from './cookbook';
 
-let favButton = document.querySelector('.view-favorites');
-let homeButton = document.querySelector('.home')
-let cardArea = document.querySelector('.all-cards');
-let cookbook = new Cookbook(recipeData);
+const favButton = document.querySelector('.view-favorites');
+const homeButton = document.querySelector('.home')
+const searchButton = document.querySelector('.search-button');
+const searchInput = document.querySelector('.search-input');
+const cardArea = document.querySelector('.all-cards');
+const cookbook = new Cookbook(recipeData);
 let user, pantry;
 
 window.onload = onStartup();
@@ -21,6 +23,7 @@ window.onload = onStartup();
 homeButton.addEventListener('click', cardButtonConditionals);
 favButton.addEventListener('click', viewFavorites);
 cardArea.addEventListener('click', cardButtonConditionals);
+searchButton.addEventListener('click', filterRecipesBySearch);
 
 function onStartup() {
   let userId = (Math.floor(Math.random() * 49) + 1)
@@ -33,6 +36,10 @@ function onStartup() {
   greetUser();
 }
 
+function filterRecipesBySearch() {
+
+
+}
 function viewFavorites() {
   if (cardArea.classList.contains('all')) {
     cardArea.classList.remove('all')
