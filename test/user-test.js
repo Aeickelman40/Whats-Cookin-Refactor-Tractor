@@ -1,10 +1,10 @@
+/* eslint-disable max-len */
 import { expect } from 'chai';
 
 import User from '../src/user.js';
 import recipeData from '../src/data/recipes.js';
 
-let user1
-let recipeIngredients
+let user1;
 
 describe('User', () => {
   beforeEach(() => {
@@ -20,35 +20,7 @@ describe('User', () => {
       {
         'ingredient': 1123,
         'amount': 3
-      }],
-
-    recipeIngredients = [
-      {
-        name: 'all purpose flour',
-        id: 20081,
-        quantity: {
-          amount: 1.5,
-          unit: 'c'
-        }
-      },
-      {
-        name: 'baking soda',
-        id: 18372,
-        quantity: {
-          amount: 0.5,
-          unit: 'tsp'
-        }
-      },
-      {
-        name: 'egg',
-        id: 1123,
-        quantity: {
-          amount: 1,
-          unit: 'large'
-        }
-      }
-    ]
-    );
+      }]);
   });
 
   it('Should have a property of favoriteRecipes with a default value', () => {
@@ -78,26 +50,5 @@ describe('User', () => {
     expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
   });
 
-  it('Should be able to check ingredients in User/s pantry for a given recipe', () => {
-    expect(user1.checkPantry(recipeIngredients)).to.eql('You have the ingredients!');
-  });
 
-  it('Should inform User if they lack required ingredients for a given recipe', () => {
-    let extraIngredientRecipe = [{
-      "name": "instant vanilla pudding mix",
-      "id": 19206,
-      "quantity": {
-        "amount": 1,
-        "unit": "Tbsp"
-      }
-    }]
-
-    let missingIngredientsWithPrice = [{
-      "id": 19206,
-      "name": "instant vanilla pudding mix",
-      "estimatedCostInCents": 660
-    }]    
-    
-    expect(user1.checkPantry(extraIngredientRecipe)).to.eql(missingIngredientsWithPrice);
-  });
 });
