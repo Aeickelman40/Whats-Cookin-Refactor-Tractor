@@ -30,7 +30,8 @@ cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
 
 function onStartup() {
-  let userId = (Math.floor(Math.random() * 49) + 1)
+  //let userId = (Math.floor(Math.random() * 49) + 1)
+  let userId = 41;
   let newUser = users.find(user => {
     return user.id === Number(userId);
   });
