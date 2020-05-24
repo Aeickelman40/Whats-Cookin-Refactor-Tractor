@@ -38,7 +38,6 @@ class User {
     });
   }
   addToMealList(recipe) {
-<<<<<<< HEAD
     if (!this.mealList.includes(recipe) && 
       this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
       typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
@@ -50,13 +49,6 @@ class User {
     }
     console.log('shoppingList', this.shoppingList);
     console.log('checkPantry', this.pantry.checkPantry(recipe.ingredients))
-=======
-    console.log(this.pantry)
-    console.log(this.pantry.checkPantry(recipe.ingredients))
-    if (!this.mealList.includes(recipe)) {
-      typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
-    }
->>>>>>> 2547b5dc9150a1470234145a046ab732bd400d01
   }
 
 }
