@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import './css/base.scss';
 import './css/styles.scss';
 
@@ -15,10 +16,13 @@ const homeButton = document.querySelector('.home')
 const searchButton = document.querySelector('.search-button');
 const searchInput = document.querySelector('.search-input');
 const cardArea = document.querySelector('.all-cards');
+const plusBtn = document.querySelector('.add-button');
 const cookbook = new Cookbook(recipeData);
 let user, pantry;
 
 window.onload = onStartup();
+
+
 
 homeButton.addEventListener('click', cardButtonConditionals);
 favButton.addEventListener('click', viewFavorites);
@@ -57,7 +61,7 @@ function viewFavorites() {
       <header id='${recipe.id}' class='card-header'>
       <label for='add-button' class='hidden'>Click to add recipe</label>
       <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
-      <img id='${recipe.id}' class='add'
+      <img id='${recipe.id}' class='add-button'
       src='https://image.flaticon.com/icons/svg/32/32339.svg' alt='Add to
       recipes to cook'></button>
       <label for='favorite-button' class='hidden'>Click to favorite recipe
@@ -95,14 +99,16 @@ function favoriteCard(event) {
 }
 
 function cardButtonConditionals(event) {
-  if (event.target.classList.contains('favorite')) {
+  if (event.target.classList.contains('add-button')) {
+    addRecipe(event);
+  } else if (event.target.classList.contains('favorite')) {
     favoriteCard(event);
   } else if (event.target.classList.contains('card-picture')) {
     displayDirections(event);
   } else if (event.target.classList.contains('home')) {
     favButton.innerHTML = 'View Favorites';
     populateCards(cookbook.recipes);
-  }
+  } 
 }
 
 
@@ -172,4 +178,10 @@ function populateCards(recipes) {
     </div>`)
   })
   getFavorites();
-};
+}
+
+function addRecipe(event) {
+  let recipeToAdd = recipeData.find(recipe =>recipe.id === Number(event.target.id));
+  user.addToMealList(recipeToAdd);
+  console.log(user.mealList);
+}
