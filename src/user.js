@@ -1,7 +1,5 @@
 import Pantry from './pantry';
 
-import Pantry from "./pantry";
-
 class User {
   constructor(id, name, contents) {
     this.id = id;
