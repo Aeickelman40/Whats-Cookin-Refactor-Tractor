@@ -190,6 +190,27 @@ function populateCards(recipes) {
   getFavorites();
 }
 
+function filterRecipesBySearch() {
+  let recipeCards = Array.from(document.querySelectorAll('.card'));
+  recipeCards.forEach(card => {
+    debugger
+    console.log(card)
+    let recipeName = card.querySelector('.recipe-name');
+    console.log(recipeName.innerText)
+    let recipeIngredient = card.querySelector('.recipe-ingredients');
+       console.log(recipeIngredient.innerText)
+    let recipeTag = card.querySelector('.recipe-tags');
+    console.log(recipeTag.innerText)
+    console.log(searchInput.value)
+    if (recipeName.innerText.includes(searchInput.value) ||
+      recipeIngredient.innerText.includes(searchInput.value) ||
+      recipeTag.innerText.includes(searchInput.value)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  })
+}
 function addRecipe(event) {
   let recipeToAdd = recipeData.find(recipe =>recipe.id === Number(event.target.id));
   user.addToMealList(recipeToAdd);
