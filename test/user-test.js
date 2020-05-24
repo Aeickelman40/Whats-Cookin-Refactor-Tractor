@@ -48,9 +48,9 @@ describe('User', () => {
     expect(user1.favoriteRecipes).to.deep.eql([recipeData[0]]);
   });
 
-  it('should throw an error if a new User has no user arguments', () => {
-    expect(() => { new User() }).to.throw(Error);
-	})
+  // it('should throw an error if a new User has no user arguments', () => {
+  //   expect(() => { new User() }).to.throw(Error);
+	// })
 
   it('Should not be able to add recipes to favorites if it is already there', () => {
     user1.addToFavorites(recipeData[0]);
@@ -94,14 +94,17 @@ describe('User', () => {
     user1.addToFavorites(recipeData[1]);
     expect(user1.findFavorites('chip')).to.eql([recipeData[0]]);
   });
+
   it('Should start with an empty meal list', () => {
     expect(user1.mealList).to.eql([]);
   });
+
   it('Should be able to add a recipe to meal list', () => {
     user1.addToMealList(recipeData[0]);
     user1.addToMealList(recipeData[1]);
     expect(user1.mealList).to.eql([recipeData[0],recipeData[1]]);
   });
+
   it('Should set list to null if other data types are passed', () => {
     user1.addToMealList();
     user1.addToMealList('garbage');
