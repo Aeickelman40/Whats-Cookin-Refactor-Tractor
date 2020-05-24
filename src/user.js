@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 
+import Pantry from "./pantry";
+
 class User {
-  constructor(id, name, pantry) {
+  constructor(id, name) {
     this.id = id;
     this.name = name;
-    this.pantry = pantry;
+    this.pantry = new Pantry(this);
     this.favoriteRecipes = [];
     this.mealList = [];
   }
@@ -35,7 +37,11 @@ class User {
     });
   }
   addToMealList(recipe) {
-    typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
+    console.log(this.pantry)
+    console.log(this.pantry.checkPantry(recipe.ingredients))
+    if (!this.mealList.includes(recipe)) {
+      typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
+    }
   }
 
 }
