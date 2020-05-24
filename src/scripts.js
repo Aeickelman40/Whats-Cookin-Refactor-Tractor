@@ -109,46 +109,46 @@ function cardButtonConditionals(event) {
   } 
 }
 
-// function displayDirections(event) {
-//   let newRecipeInfo = cookbook.recipes.find(recipe => {
-//     if (recipe.id === Number(event.target.id)) {
-//       return recipe;
-//     }
-//   })
-//   let recipeObject = new Recipe(newRecipeInfo, ingredientsData);
-//   let cost = recipeObject.calculateCost()
-//   let costInDollars = (cost / 100).toFixed(2)
-//   cardArea.classList.add('all');
-//   cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
-//   <p class='all-recipe-info'>
-//   <strong>It will cost: </strong><span class='cost recipe-info'>
-//   $${costInDollars}</span><br><br>
-//   <strong>You will need: </strong><span class='ingredients recipe-info'></span>
-//   <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
-//   </span></ol>
-//   <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
-//   <p>`;
-//   let ingredientsSpan = document.querySelector('.ingredients');
-//   let instructionsSpan = document.querySelector('.instructions');
-//   let tagsSpan = document.querySelector('.recipe-tags');
-//   recipeObject.ingredients.forEach(ingredient => {
-//     ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
-//     ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
-//     ${ingredient.name}</li></ul>
-//     `)
-//   })
-//   recipeObject.instructions.forEach(instruction => {
-//     instructionsSpan.insertAdjacentHTML('beforebegin', `<li>
-//     ${instruction.instruction}</li>
-//     `)
-//   })
-//   recipeObject.tags.forEach(tag => {
-//      tagsSpan.insertAdjacentHTML('beforebegin', `<li>
-//     ${tag}</li>
-//     `)
-//   })
+function displayDirections(event) {
+  let newRecipeInfo = cookbook.recipes.find(recipe => {
+    if (recipe.id === Number(event.target.id)) {
+      return recipe;
+    }
+  })
+  let recipeObject = new Recipe(newRecipeInfo, ingredientsData);
+  let cost = recipeObject.calculateCost()
+  let costInDollars = (cost / 100).toFixed(2)
+  cardArea.classList.add('all');
+  cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
+  <p class='all-recipe-info'>
+  <strong>It will cost: </strong><span class='cost recipe-info'>
+  $${costInDollars}</span><br><br>
+  <strong>You will need: </strong><span class='ingredients recipe-info'></span>
+  <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
+  </span></ol>
+  <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
+  <p>`;
+  let ingredientsSpan = document.querySelector('.ingredients');
+  let instructionsSpan = document.querySelector('.instructions');
+  let tagsSpan = document.querySelector('.recipe-tags');
+  recipeObject.ingredients.forEach(ingredient => {
+    ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
+    ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
+    ${ingredient.name}</li></ul>
+    `)
+  })
+  recipeObject.instructions.forEach(instruction => {
+    instructionsSpan.insertAdjacentHTML('beforebegin', `<li>
+    ${instruction.instruction}</li>
+    `)
+  })
+  recipeObject.tags.forEach(tag => {
+    tagsSpan.insertAdjacentHTML('beforebegin', `<li>
+    ${tag}</li>
+    `)
+  })
 
-// }
+}
 
 function getFavorites() {
   if (user.favoriteRecipes.length) {
@@ -191,26 +191,20 @@ function populateCards(recipes) {
 }
 
 function filterRecipesBySearch() {
-  let recipeCards = Array.from(document.querySelectorAll('.card'));
-  recipeCards.forEach(card => {
-    debugger
-    console.log(card)
-    let recipeName = card.querySelector('.recipe-name');
-    console.log(recipeName.innerText)
-    let recipeIngredient = card.querySelector('.recipe-ingredients');
-       console.log(recipeIngredient.innerText)
-    let recipeTag = card.querySelector('.recipe-tags');
-    console.log(recipeTag.innerText)
-    console.log(searchInput.value)
-    if (recipeName.innerText.includes(searchInput.value) ||
-      recipeIngredient.innerText.includes(searchInput.value) ||
-      recipeTag.innerText.includes(searchInput.value)) {
-      card.classList.remove('hidden');
-    } else {
-      card.classList.add('hidden');
+  event.preventDefault();
+  let recipesByIngredient = recipeData.filter(recipe => {
+    let filteredIngredients = recipe.ingredients.filter(ingredient => 
+      ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase())) 
+    if (filteredIngredients.length > 0) {
+      return true;
     }
-  })
+  })  
+  let recipesByName = recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
+  let recipesByTag = recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
+  let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
+  populateCards(searchedRecipes);
 }
+
 function addRecipe(event) {
   let recipeToAdd = recipeData.find(recipe =>recipe.id === Number(event.target.id));
   user.addToMealList(recipeToAdd);
