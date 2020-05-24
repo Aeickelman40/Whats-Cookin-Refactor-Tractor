@@ -5,7 +5,7 @@ class User {
     this.name = name;
     this.pantry = pantry;
     this.favoriteRecipes = [];
-
+    this.mealList = [];
   }
 
   addToFavorites(recipe) {
@@ -33,6 +33,10 @@ class User {
       });
     });
   }
+  addToMealList(recipe) {
+    this.mealList.push(recipe);
+  }
+
 }
 
 

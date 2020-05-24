@@ -49,6 +49,14 @@ describe('User', () => {
     user1.addToFavorites(recipeData[1]);
     expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
   });
+  it('Should start with an empty meal list', () => {
+    expect(user1.mealList).to.eql([]);
+  });
+  it('Should be able to add a recipe to meal list', () => {
+    user1.addToMealList(recipeData[0]);
+    user1.addToMealList(recipeData[1]);
+    expect(user1.mealList).to.eql([recipeData[0],recipeData[1]]);
+  });
 
 
 });
