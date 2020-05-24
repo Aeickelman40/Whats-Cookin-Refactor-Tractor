@@ -118,10 +118,11 @@ h1 {
 
 .all-cards {
   display: grid;
+  background-color: #37515C;
   grid-gap: 30px;
   grid-template-columns: repeat(4, 1fr);
   padding: 30px 0 30px 30px;
-  width: 95.5vw;
+  width: 99.5vw;
 }
 
 img {
@@ -182,7 +183,6 @@ h3 {
 }
 
 main {
-  background-color: #37515C;
   height: 100%;
   width: 100%;
 }
@@ -190,4 +190,9 @@ main {
 .favorite-active {
   background-image: url(https://image.flaticon.com/icons/svg/148/148841.svg);
   background-repeat: no-repeat;
+}
+.pantry {
+  background-color: rgb(92, 55, 55);
+  height: 1000px;
+  width: 100px;
 }
