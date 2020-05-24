@@ -1,7 +1,7 @@
 import ingredientsData from "./data/ingredients";
 class Pantry {
-  constructor(userIngredients, user) {
-    this.contents = userIngredients;
+  constructor(user) {
+    this.contents = user.pantry;
     this.user = user;
   }
   checkPantry(recipeIngredients) {
