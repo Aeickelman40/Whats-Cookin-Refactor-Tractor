@@ -57,6 +57,12 @@ describe('User', () => {
     user1.addToMealList(recipeData[1]);
     expect(user1.mealList).to.eql([recipeData[0],recipeData[1]]);
   });
+  it('Should set list to null if other data types are passed', () => {
+    user1.addToMealList();
+    user1.addToMealList('garbage');
+    user1.addToMealList(4);
+    expect(user1.mealList).to.eql([null, null, null]);
+  });
 
 
 });

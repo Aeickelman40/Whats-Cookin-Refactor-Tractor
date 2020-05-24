@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 
 class User {
   constructor(id, name, pantry) {
@@ -34,11 +35,11 @@ class User {
     });
   }
   addToMealList(recipe) {
-    this.mealList.push(recipe);
+    typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
   }
 
 }
 
 
-  export default User;
+export default User;
 
