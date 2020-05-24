@@ -1,12 +1,13 @@
-/* eslint-disable max-len */
+import Pantry from './pantry';
 
 class User {
-  constructor(id, name, pantry) {
+  constructor(id, name, contents) {
     this.id = id;
     this.name = name;
-    this.pantry = pantry;
+    this.pantry = new Pantry (this, contents);
     this.favoriteRecipes = [];
     this.mealList = [];
+    this.shoppingList = [];
   }
 
   addToFavorites(recipe) {
@@ -35,7 +36,17 @@ class User {
     });
   }
   addToMealList(recipe) {
-    typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
+    if (!this.mealList.includes(recipe) && 
+      this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
+      typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
+    } else if (!this.mealList.includes(recipe)) {
+      let tempIngredients = this.pantry.checkPantry(recipe.ingredients);
+      let newIngredients = this.shoppingList.concat(tempIngredients);
+      let uniqIngredients = [...new Set(newIngredients)];
+      this.shoppingList = uniqIngredients;
+    }
+    console.log('shoppingList', this.shoppingList);
+    console.log('checkPantry', this.pantry.checkPantry(recipe.ingredients))
   }
 
 }
