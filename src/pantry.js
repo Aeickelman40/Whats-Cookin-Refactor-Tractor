@@ -1,8 +1,8 @@
 import ingredientsData from "./data/ingredients";
 
 class Pantry {
-  constructor(user) {
-    this.contents = user.pantry;
+  constructor(user, contents) {
+    this.contents = contents;
     this.user = user;
   }
   checkPantry(recipeIngredients) {
@@ -11,7 +11,7 @@ class Pantry {
     console.log(recipeIngredients);
     // Breaks at this.user.pantry.forEach when invoking addMealToList in the user class
     recipeIngredients.forEach(recipeIngredient => {
-      this.user.pantry.forEach(pantryItem => {
+      this.user.pantry.contents.forEach(pantryItem => {
         if (pantryItem.ingredient === recipeIngredient.id) {
           counter ++;
         } else {
