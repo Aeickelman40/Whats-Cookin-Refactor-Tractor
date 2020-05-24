@@ -3,17 +3,10 @@ import Pantry from './pantry';
 import Pantry from "./pantry";
 
 class User {
-<<<<<<< HEAD
   constructor(id, name, contents) {
     this.id = id;
     this.name = name;
     this.pantry = new Pantry (this, contents);
-=======
-  constructor(id, name) {
-    this.id = id;
-    this.name = name;
-    this.pantry = new Pantry(this);
->>>>>>> 2547b5dc9150a1470234145a046ab732bd400d01
     this.favoriteRecipes = [];
     this.mealList = [];
     this.shoppingList = [];
