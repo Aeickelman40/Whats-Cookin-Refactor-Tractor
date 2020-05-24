@@ -14,10 +14,10 @@ import Cookbook from './cookbook';
 const favButton = document.querySelector('.view-favorites');
 const homeButton = document.querySelector('.home')
 const searchButton = document.querySelector('.search-button');
-const searchInput = document.querySelector('.search-input');
 const cardArea = document.querySelector('.all-cards');
 const plusBtn = document.querySelector('.add-button');
 const cookbook = new Cookbook(recipeData);
+let searchInput = document.querySelector('.search-input');
 let user, pantry;
 
 window.onload = onStartup();
@@ -35,16 +35,14 @@ function onStartup() {
   let newUser = users.find(user => {
     return user.id === Number(userId);
   });
+  // Instantiate this one lines 19 instead?
   user = new User(userId, newUser.name, newUser.pantry)
   pantry = new Pantry(newUser.pantry)
   populateCards(cookbook.recipes);
   greetUser();
 }
 
-function filterRecipesBySearch() {
 
-
-}
 function viewFavorites() {
   if (cardArea.classList.contains('all')) {
     cardArea.classList.remove('all')
@@ -57,7 +55,7 @@ function viewFavorites() {
     favButton.innerHTML = 'Refresh Favorites'
     cardArea.innerHTML = '';
     user.favoriteRecipes.forEach(recipe => {
-      cardArea.insertAdjacentHTML('afterbegin', `<div id='${recipe.id}'
+      cardArea.insertAdjacentHTML('afterbegin', `<section id='${recipe.id}'
       class='card'>
       <header id='${recipe.id}' class='card-header'>
       <label for='add-button' class='hidden'>Click to add recipe</label>
@@ -69,10 +67,10 @@ function viewFavorites() {
       </label>
       <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite-active card-button'>
       </button></header>
-      <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
+      <span id='${recipe.name}' class='recipe-name'>${recipe.name}</span>
       <img id='${recipe.id}' tabindex='0' class='card-picture'
       src='${recipe.image}' alt='Food from recipe'>
-      </div>`)
+      </section>`)
     })
   }
 }
@@ -112,7 +110,6 @@ function cardButtonConditionals(event) {
   } 
 }
 
-
 function displayDirections(event) {
   let newRecipeInfo = cookbook.recipes.find(recipe => {
     if (recipe.id === Number(event.target.id)) {
@@ -130,9 +127,11 @@ function displayDirections(event) {
   <strong>You will need: </strong><span class='ingredients recipe-info'></span>
   <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
   </span></ol>
-  </p>`;
+  <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
+  <p>`;
   let ingredientsSpan = document.querySelector('.ingredients');
   let instructionsSpan = document.querySelector('.instructions');
+  let tagsSpan = document.querySelector('.recipe-tags');
   recipeObject.ingredients.forEach(ingredient => {
     ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
     ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
@@ -144,6 +143,12 @@ function displayDirections(event) {
     ${instruction.instruction}</li>
     `)
   })
+  recipeObject.tags.forEach(tag => {
+    tagsSpan.insertAdjacentHTML('beforebegin', `<li>
+    ${tag}</li>
+    `)
+  })
+
 }
 
 function getFavorites() {
@@ -151,7 +156,9 @@ function getFavorites() {
     user.favoriteRecipes.forEach(recipe => {
       document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active')
     })
-  } else return
+  } else {
+    return
+  }
 }
 
 function populateCards(recipes) {
@@ -160,7 +167,7 @@ function populateCards(recipes) {
     cardArea.classList.remove('all')
   }
   recipes.forEach(recipe => {
-    cardArea.insertAdjacentHTML('afterbegin', `<div id='${recipe.id}'
+    cardArea.insertAdjacentHTML('afterbegin', `<section id='${recipe.id}'
     class='card'>
         <header id='${recipe.id}' class='card-header'>
           <label for='add-button' class='hidden'>Click to add recipe</label>
@@ -174,11 +181,29 @@ function populateCards(recipes) {
           <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
         </header>
           <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
+          <span id='${recipe.id}' class='recipe-ingredients hidden'>${recipe.ingredients}</span> 
+          <span id='${recipe.id}' class='recipe-tags hidden'>${recipe.tags}</span> 
           <img id='${recipe.id}' tabindex='0' class='card-picture'
           src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
-    </div>`)
+    </section>`)
   })
+  // Why call getFavorites at the end of this?
   getFavorites();
+}
+
+function filterRecipesBySearch() {
+  event.preventDefault();
+  let recipesByIngredient = recipeData.filter(recipe => {
+    let filteredIngredients = recipe.ingredients.filter(ingredient => 
+      ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase())) 
+    if (filteredIngredients.length > 0) {
+      return true;
+    }
+  })  
+  let recipesByName = recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
+  let recipesByTag = recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
+  let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
+  populateCards(searchedRecipes);
 }
 
 function addRecipe(event) {

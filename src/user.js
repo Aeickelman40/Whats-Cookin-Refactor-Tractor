@@ -1,10 +1,19 @@
 import Pantry from './pantry';
 
+import Pantry from "./pantry";
+
 class User {
+<<<<<<< HEAD
   constructor(id, name, contents) {
     this.id = id;
     this.name = name;
     this.pantry = new Pantry (this, contents);
+=======
+  constructor(id, name) {
+    this.id = id;
+    this.name = name;
+    this.pantry = new Pantry(this);
+>>>>>>> 2547b5dc9150a1470234145a046ab732bd400d01
     this.favoriteRecipes = [];
     this.mealList = [];
     this.shoppingList = [];
@@ -36,6 +45,7 @@ class User {
     });
   }
   addToMealList(recipe) {
+<<<<<<< HEAD
     if (!this.mealList.includes(recipe) && 
       this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
       typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
@@ -47,6 +57,13 @@ class User {
     }
     console.log('shoppingList', this.shoppingList);
     console.log('checkPantry', this.pantry.checkPantry(recipe.ingredients))
+=======
+    console.log(this.pantry)
+    console.log(this.pantry.checkPantry(recipe.ingredients))
+    if (!this.mealList.includes(recipe)) {
+      typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
+    }
+>>>>>>> 2547b5dc9150a1470234145a046ab732bd400d01
   }
 
 }
