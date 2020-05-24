@@ -183,4 +183,5 @@ function populateCards(recipes) {
 function addRecipe(event) {
   let recipeToAdd = recipeData.find(recipe =>recipe.id === Number(event.target.id));
   user.addToMealList(recipeToAdd);
+  console.log(user.mealList);
 }
