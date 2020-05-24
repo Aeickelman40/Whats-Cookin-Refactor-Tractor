@@ -102,7 +102,7 @@ describe('User', () => {
   it('Should be able to add a recipe to meal list', () => {
     user1.addToMealList(recipeData[0]);
     user1.addToMealList(recipeData[1]);
-    expect(user1.mealList).to.eql([recipeData[0],recipeData[1]]);
+    expect(user1.mealList).to.eql([recipeData[0], recipeData[1]]);
   });
 
   it('Should set list to null if other data types are passed', () => {
