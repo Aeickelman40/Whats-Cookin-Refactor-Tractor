@@ -15,7 +15,6 @@ const favButton = document.querySelector('.view-favorites');
 const homeButton = document.querySelector('.home')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
-const plusBtn = document.querySelector('.add-button');
 const cookbook = new Cookbook(recipeData);
 let searchInput = document.querySelector('.search-input');
 let user, pantry;
@@ -203,7 +202,8 @@ function filterRecipesBySearch() {
   let recipesByName = recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
   let recipesByTag = recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
   let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
-  populateCards(searchedRecipes);
+  let uniqSearchedRecipes = [...new Set(searchedRecipes)];
+  populateCards(uniqSearchedRecipes);
 }
 
 function addRecipe(event) {
