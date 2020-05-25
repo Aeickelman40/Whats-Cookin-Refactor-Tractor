@@ -11,6 +11,14 @@ describe('Cookbook', () => {
     cookbook = new Cookbook(recipeData);
   });
 
+  it('Should be a function', () => {
+    expect(Cookbook).to.be.a('function');
+  });
+
+  it('Should be an instance of a pantry', () => {
+    expect(cookbook).to.be.an.instanceOf(Cookbook);
+  });
+
   it('Should have an array of all recipes', () => {
     expect(cookbook.recipes).to.be.an('array');
   });

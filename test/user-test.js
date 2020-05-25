@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 
 import User from '../src/user.js';
+import Pantry from '../src/pantry.js';
 import recipeData from '../src/data/recipes.js';
 
 describe('User', () => {
@@ -35,7 +36,7 @@ describe('User', () => {
   it('Should have a id, name and a pantry to reference', () => {
     expect(user1.id).to.eql(1);
     expect(user1.name).to.eql('Boba');
-    expect(user1.pantry).to.eql([{'ingredient': 20081, 'amount': 1}, {'ingredient': 18372, 'amount': 1}, {'ingredient': 1123, 'amount': 3}]);
+    expect(user1.pantry).to.be.an.instanceOf(Pantry);
   })
 
   it('Should be able to have favoriteRecipes for each user', () => {
@@ -48,9 +49,9 @@ describe('User', () => {
     expect(user1.favoriteRecipes).to.deep.eql([recipeData[0]]);
   });
 
-  // it('should throw an error if a new User has no user arguments', () => {
-  //   expect(() => { new User() }).to.throw(Error);
-	// })
+  it('should throw an error if a new User has no user arguments', () => {
+    expect(() => { new User(aUser) }).to.throw(Error);
+	})
 
   it('Should not be able to add recipes to favorites if it is already there', () => {
     user1.addToFavorites(recipeData[0]);
@@ -60,10 +61,9 @@ describe('User', () => {
     expect(user1.favoriteRecipes).to.deep.eql([recipeData[0], recipeData[1]]);
   })
 
-  // it('Should give an Error when trying to add to favorites with no recipe arguement', () => {
-  //   /// This test needs to be passed still
-  //   expect(() => { user1.addToFavorites() }).to.throw(Error);
-  // })
+  it('Should give an Error when trying to add to favorites with no recipe arguement', () => {
+    expect(() => { user1.addToFavorites(recipe) }).to.throw(Error);
+  })
 
   it('Should be able to remove recipes from favoriteRecipes', () =>{
     user1.addToFavorites(recipeData[0]);
@@ -73,10 +73,9 @@ describe('User', () => {
     expect(user1.favoriteRecipes).to.deep.eql([]);
   });
 
-  // it('Should give an Error when trying to remove from favorites with no recipe arguement', () => {
-  //   /// This test needs to be passed still
-  //   expect(() => { user1.removeFromFavorites() }).to.throw(Error);
-  // })
+  it('Should give an Error when trying to remove from favorites with no recipe arguement', () => {
+    expect(() => { user1.removeFromFavorites(recipe) }).to.throw(Error);
+  })
 
   it('Should be able to filter through favoriteRecipes by tag', () => {
     user1.addToFavorites(recipeData[0]);
@@ -84,10 +83,9 @@ describe('User', () => {
     expect(user1.filterFavorites('antipasti')).to.eql([recipeData[0]]);
   });
 
-  // it('Should give an Error when filtering with no recipe arguement', () => {
-  //   /// This test needs to be passed still
-  //   expect(() => { user1.filterFavorites() }).to.throw(Error);
-  // })
+  it('Should give an Error when filtering with no recipe arguement', () => {
+    expect(() => { user1.filterFavorites(tag) }).to.throw(Error);
+  })
 
   it('Should be able to search favoriteRecipes by name', () => {
     user1.addToFavorites(recipeData[0]);
@@ -99,22 +97,22 @@ describe('User', () => {
     expect(user1.mealList).to.eql([]);
   });
 
-  it('Should be able to add a recipe to meal list', () => {
-    user1.addToMealList(recipeData[0]);
-    user1.addToMealList(recipeData[1]);
-    expect(user1.mealList).to.eql([recipeData[0], recipeData[1]]);
-  });
+//   it('Should be able to add a recipe to meal list', () => {
+//     user1.addToMealList(recipeData[0]);
+//     user1.addToMealList(recipeData[1]);
+//     expect(user1.mealList).to.eql([recipeData[0], recipeData[1]]);
+//   });
 
-  it('Should set list to null if other data types are passed', () => {
-    user1.addToMealList();
-    user1.addToMealList('garbage');
-    user1.addToMealList(4);
-    expect(user1.mealList).to.eql([null, null, null]);
-  });
+//   it('Should set list to null if other data types are passed', () => {
+//     user1.addToMealList();
+//     user1.addToMealList('garbage');
+//     user1.addToMealList(4);
+//     expect(user1.mealList).to.eql([null, null, null]);
+//   });
 
-  it('Should be able to search favoriteRecipes by ingredient', () => {
-    user1.addToFavorites(recipeData[0]);
-    user1.addToFavorites(recipeData[1]);
-    expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
-  });
+//   it('Should be able to search favoriteRecipes by ingredient', () => {
+//     user1.addToFavorites(recipeData[0]);
+//     user1.addToFavorites(recipeData[1]);
+//     expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
+//   });
 });

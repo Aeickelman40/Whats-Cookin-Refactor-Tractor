@@ -51,7 +51,7 @@ describe('Pantry', () => {
       }
     ]
 
-    pantry = new Pantry(user1);
+    pantry = new Pantry(user1, user1[2]);
   });
 
   it('Should be a function', () => {
@@ -63,15 +63,15 @@ describe('Pantry', () => {
   });
 
   it('Should be able to hold user data', () => {
-    expect(pantry.contents).to.equal(user1.pantry);
-  });
-
-  it('Should be able to hold user data', () => {
     expect(pantry.user).to.equal(user1);
   });
 
-  it('Should give an Error if a new Pantry has no user arguements', () => {
-    expect(() => { new Pantry() }).to.throw(Error);
+  it('Should be able to hold user data', () => {
+    expect(pantry.contents).to.deep.equal(user1[2]);
+  });
+
+  it('Should give an Error if a new Pantry has the wrong user arguements', () => {
+    expect(() => { new Pantry(aUser) }).to.throw(Error);
   });
   
   it('Should be able to check ingredients in User/s pantry for a given recipe', () => {
