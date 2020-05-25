@@ -1,4 +1,5 @@
 import Pantry from './pantry';
+import Recipe from './recipe';
 
 class User {
   constructor(id, name, contents) {
@@ -36,17 +37,19 @@ class User {
     });
   }
   addToMealList(recipe) {
+    if (typeof recipe !== 'object') {
+      this.mealList.push(null);
+      return ;
+    }
     if (!this.mealList.includes(recipe) && 
       this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
-      typeof recipe === 'object' ? this.mealList.push(recipe) : this.mealList.push(null);
+      this.mealList.push(recipe);
     } else if (!this.mealList.includes(recipe)) {
       let tempIngredients = this.pantry.checkPantry(recipe.ingredients);
       let newIngredients = this.shoppingList.concat(tempIngredients);
       let uniqIngredients = [...new Set(newIngredients)];
       this.shoppingList = uniqIngredients;
     }
-    console.log('shoppingList', this.shoppingList);
-    console.log('checkPantry', this.pantry.checkPantry(recipe.ingredients))
   }
 
 }
