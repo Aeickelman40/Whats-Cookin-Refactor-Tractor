@@ -2,13 +2,12 @@ import ingredientsData from "./data/ingredients";
 
 class Pantry {
   constructor(user, contents) {
-    this.contents = contents;
     this.user = user;
+    this.contents = contents;
   }
   checkPantry(recipeIngredients) {
     let counter = 0;
     let missingIngredients = [];
-    console.log(recipeIngredients);
     // Breaks at this.user.pantry.forEach when invoking addMealToList in the user class
     recipeIngredients.forEach(recipeIngredient => {
       this.user.pantry.contents.forEach(pantryItem => {
