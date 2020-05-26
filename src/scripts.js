@@ -21,7 +21,7 @@ const favButton = document.querySelector('.view-favorites');
 const homeButton = document.querySelector('.home')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
-const cookbook = new Cookbook(data.recipeData);
+let cookbook;
 let searchInput = document.querySelector('.search-input');
 let user, pantry;
 
@@ -30,30 +30,22 @@ favButton.addEventListener('click', viewFavorites);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
 
-window.onload = onStartup();
+window.onload = onStartup;
 
 function onStartup() {
-  
-  fetchData()
-  
-  .then(response => {
-      data.wcUsersData = response.wcUsersData;
-      data.ingredientsData = response.ingredientsData;
-      data.recipeData = response.recipeData;
-    })
-  console.log(data.wcUsersData)
-  console.log(data.ingredientsData)
-  console.log(data.recipeData)
+  fetchData() 
+    .then(allData => {
+      data.wcUsersData = allData.wcUsersData;
+      data.ingredientsData = allData.ingredientsData;
+      data.recipeData = allData.recipeData;
+    }) 
     .then( () => {
-      let userId = 41;
-      let newUser = data.wcUsersData.find(user => {
-        user = new User(userId, newUser.name, newUser.pantry)
-        pantry = new Pantry(newUser.pantry)
-        return user.id === Number(userId);
-      });
+      let userId = 40;
+      cookbook = new Cookbook(data.recipeData);
+      user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
       populateCards(cookbook.recipes);
       greetUser();
-    })
+    }) 
     .catch(err => console.log(err.message)) 
 }
 
