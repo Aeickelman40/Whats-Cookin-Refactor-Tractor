@@ -1,43 +1,36 @@
 function fetchData() {
-  let userdata = fetch('https://fe-apps.herokuapp.com/api/v1/whats-cookin/1911/users/wcUsersData')
-    .then(response => response.json())
-    .then(data => {
-      return data.wcUsersData
+  let wcUsersData = fetch('https://fe-apps.herokuapp.com/api/v1/whats-cookin/1911/users/wcUsersData')
+    .then(data => data.json())
+    .then(response => {
+      return response.wcUsersData;
     })
-    .catch(err => console.log(err));
-//   userdata.then(data => console.log(data))
- return userdata;
+    .catch(err => console.log(err.message))
+
+  let ingredientsData = fetch('https://fe-apps.herokuapp.com/api/v1/whats-cookin/1911/ingredients/ingredientsData')
+    .then(data => data.json())
+    .then(response => {
+      return response.ingredientsData;
+    })
+    .catch(err => console.log(err.message))
+
+  let recipeData = fetch('https://fe-apps.herokuapp.com/api/v1/whats-cookin/1911/recipes/recipeData')
+    .then(data => data.json())
+    .then(response => {
+      return response.recipeData;
+    })
+    .catch(err => console.log(err.message))
+
+  return Promise.all([wcUsersData, ingredientsData, recipeData])
+    .then(data => {
+      let allData = {}
+
+      allData.wcUsersData = data[0]
+      allData.ingredientsData = data[1]
+      allData.recipeData = data[2]
+
+      // console.log(allData)
+      return allData
+    })
 }
 
-
-// function fetchData() {
-//     let userData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/users/userData')
-//         .then(data => data.json())
-//         .then(response => {
-//             return response.userData
-//         })
-//     let activityData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData')
-//         .then(data => data.json())
-//         .then(response => {
-//             return response.activityData
-//         })
-//     let hydrationData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData')
-//         .then(data => data.json())
-//         .then(response => {
-//             return response.hydrationData
-//         })
-//     let sleepData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData')
-//         .then(data => data.json())
-//         .then(response => {
-//             return response.sleepData
-//         })
-//     return Promise.all([userData, activityData, hydrationData, sleepData]).then(data => {
-//         let allData = {}
-//         allData.userData = data[0]
-//         allData.activityData = data[1]
-//         allData.hydrationData = data[2]
-//         allData.sleepData = data[3]
-//         return allData
-//     })
-// }
-export default fetchData
+export default fetchData;
