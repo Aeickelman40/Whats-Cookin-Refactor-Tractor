@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import './css/base.scss';
 import './css/styles.scss';
+import fetchData from './allData';
 
 import recipeData from './data/recipes';
 import ingredientsData from './data/ingredients';
@@ -18,7 +19,6 @@ const cardArea = document.querySelector('.all-cards');
 const cookbook = new Cookbook(recipeData);
 let searchInput = document.querySelector('.search-input');
 let user, pantry;
-
 window.onload = onStartup();
 
 
@@ -30,6 +30,10 @@ searchButton.addEventListener('click', filterRecipesBySearch);
 
 function onStartup() {
   //let userId = (Math.floor(Math.random() * 49) + 1)
+  let abc;
+  fetchData()
+    .then(data => abc = data)
+  console.log(abc);
   let userId = 41;
   let newUser = users.find(user => {
     return user.id === Number(userId);
@@ -39,6 +43,8 @@ function onStartup() {
   pantry = new Pantry(newUser.pantry)
   populateCards(cookbook.recipes);
   greetUser();
+ 
+  
 }
 
 
@@ -107,6 +113,7 @@ function cardButtonConditionals(event) {
     favButton.innerHTML = 'View Favorites';
     populateCards(cookbook.recipes);
   } 
+
 }
 
 function displayDirections(event) {
@@ -211,3 +218,5 @@ function addRecipe(event) {
   user.addToMealList(recipeToAdd);
   console.log(user.mealList);
 }
+
+
