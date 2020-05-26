@@ -1,52 +1,53 @@
-/* eslint-disable max-len */
+
 import './css/base.scss';
 import './css/styles.scss';
-import fetchData from './allData';
-
-import recipeData from './data/recipes';
-import ingredientsData from './data/ingredients';
-import users from './data/users';
-
+import fetchData from './allData.js';
 import Pantry from './pantry';
 import Recipe from './recipe';
 import User from './user';
 import Cookbook from './cookbook';
 
+// import recipeData from './data/recipes';
+// import ingredientsData from './data/ingredients';
+// import users from './data/users';
+
+const data = {
+  wcUsersData: null,
+  ingredientsData: null,
+  recipeData: null
+}
+
 const favButton = document.querySelector('.view-favorites');
 const homeButton = document.querySelector('.home')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
-const cookbook = new Cookbook(recipeData);
+let cookbook;
 let searchInput = document.querySelector('.search-input');
 let user, pantry;
-window.onload = onStartup();
-
-
 
 homeButton.addEventListener('click', cardButtonConditionals);
 favButton.addEventListener('click', viewFavorites);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
 
-function onStartup() {
-  //let userId = (Math.floor(Math.random() * 49) + 1)
-  let abc;
-  fetchData()
-    .then(data => abc = data)
-  console.log(abc);
-  let userId = 41;
-  let newUser = users.find(user => {
-    return user.id === Number(userId);
-  });
-  // Instantiate this one lines 19 instead?
-  user = new User(userId, newUser.name, newUser.pantry)
-  pantry = new Pantry(newUser.pantry)
-  populateCards(cookbook.recipes);
-  greetUser();
- 
-  
-}
+window.onload = onStartup;
 
+function onStartup() {
+  fetchData() 
+    .then(allData => {
+      data.wcUsersData = allData.wcUsersData;
+      data.ingredientsData = allData.ingredientsData;
+      data.recipeData = allData.recipeData;
+    }) 
+    .then( () => {
+      let userId = 40;
+      cookbook = new Cookbook(data.recipeData);
+      user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
+      populateCards(cookbook.recipes);
+      greetUser();
+    }) 
+    .catch(err => console.log(err.message)) 
+}
 
 function viewFavorites() {
   if (cardArea.classList.contains('all')) {
@@ -199,22 +200,22 @@ function populateCards(recipes) {
 
 function filterRecipesBySearch() {
   event.preventDefault();
-  let recipesByIngredient = recipeData.filter(recipe => {
+  let recipesByIngredient = data.recipeData.filter(recipe => {
     let filteredIngredients = recipe.ingredients.filter(ingredient => 
       ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase())) 
     if (filteredIngredients.length > 0) {
       return true;
     }
   })  
-  let recipesByName = recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
-  let recipesByTag = recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
+  let recipesByName = data.recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
+  let recipesByTag = data.recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
   let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
   let uniqSearchedRecipes = [...new Set(searchedRecipes)];
   populateCards(uniqSearchedRecipes);
 }
 
 function addRecipe(event) {
-  let recipeToAdd = recipeData.find(recipe =>recipe.id === Number(event.target.id));
+  let recipeToAdd = data.recipeData.find(recipe =>recipe.id === Number(event.target.id));
   user.addToMealList(recipeToAdd);
   console.log(user.mealList);
 }
