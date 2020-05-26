@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { expect } from 'chai';
-
+import users from '../src/data/users';
 import User from '../src/user.js';
 import Pantry from '../src/pantry.js';
 import recipeData from '../src/data/recipes.js';
@@ -8,8 +8,13 @@ import recipeData from '../src/data/recipes.js';
 describe('User', () => {
 
   let user1;
-
+  let userDemarcus;
   beforeEach(() => {
+    let userId = 41;
+    let newUser = users.find(user => {
+      return user.id === Number(userId);
+    });
+    userDemarcus = new User(userId, newUser.name, newUser.pantry)
     user1 = new User(1, 'Boba', [
       {
         'ingredient': 20081,
@@ -51,7 +56,7 @@ describe('User', () => {
 
   it('should throw an error if a new User has no user arguments', () => {
     expect(() => { new User(aUser) }).to.throw(Error);
-	})
+  })
 
   it('Should not be able to add recipes to favorites if it is already there', () => {
     user1.addToFavorites(recipeData[0]);
@@ -84,7 +89,9 @@ describe('User', () => {
   });
 
   it('Should give an Error when filtering with no recipe arguement', () => {
-    expect(() => { user1.filterFavorites(tag) }).to.throw(Error);
+    expect(() => {
+      user1.filterFavorites(tag) 
+    }).to.throw(Error);
   })
 
   it('Should be able to search favoriteRecipes by name', () => {
@@ -97,22 +104,22 @@ describe('User', () => {
     expect(user1.mealList).to.eql([]);
   });
 
-//   it('Should be able to add a recipe to meal list', () => {
-//     user1.addToMealList(recipeData[0]);
-//     user1.addToMealList(recipeData[1]);
-//     expect(user1.mealList).to.eql([recipeData[0], recipeData[1]]);
-//   });
+  it('Should be able to add a recipe to meal list', () => {
+    //recipeData.forEach(recipe => console.log(recipe.name))
+    userDemarcus.addToMealList(recipeData[48]);
+    expect(userDemarcus.mealList).to.eql([recipeData[48]]);
+  });
 
-//   it('Should set list to null if other data types are passed', () => {
-//     user1.addToMealList();
-//     user1.addToMealList('garbage');
-//     user1.addToMealList(4);
-//     expect(user1.mealList).to.eql([null, null, null]);
-//   });
+  it('Should set list to null if other data types are passed', () => {
+    userDemarcus.addToMealList();
+    userDemarcus.addToMealList('garbage');
+    userDemarcus.addToMealList(4);
+    expect(userDemarcus.mealList).to.eql([null, null, null]);
+  });
 
-//   it('Should be able to search favoriteRecipes by ingredient', () => {
-//     user1.addToFavorites(recipeData[0]);
-//     user1.addToFavorites(recipeData[1]);
-//     expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
-//   });
+  it('Should be able to search favoriteRecipes by ingredient', () => {
+    user1.addToFavorites(recipeData[0]);
+    user1.addToFavorites(recipeData[1]);
+    expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
+  });
 });

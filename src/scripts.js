@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import './css/base.scss';
 import './css/styles.scss';
+import fetchData from './allData';
 
 import recipeData from './data/recipes';
 import ingredientsData from './data/ingredients';
@@ -15,11 +16,9 @@ const favButton = document.querySelector('.view-favorites');
 const homeButton = document.querySelector('.home')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
-const plusBtn = document.querySelector('.add-button');
 const cookbook = new Cookbook(recipeData);
 let searchInput = document.querySelector('.search-input');
 let user, pantry;
-
 window.onload = onStartup();
 
 
@@ -31,6 +30,10 @@ searchButton.addEventListener('click', filterRecipesBySearch);
 
 function onStartup() {
   //let userId = (Math.floor(Math.random() * 49) + 1)
+  let abc;
+  fetchData()
+    .then(data => abc = data)
+  console.log(abc);
   let userId = 41;
   let newUser = users.find(user => {
     return user.id === Number(userId);
@@ -40,6 +43,8 @@ function onStartup() {
   pantry = new Pantry(newUser.pantry)
   populateCards(cookbook.recipes);
   greetUser();
+ 
+  
 }
 
 
@@ -108,6 +113,7 @@ function cardButtonConditionals(event) {
     favButton.innerHTML = 'View Favorites';
     populateCards(cookbook.recipes);
   } 
+
 }
 
 function displayDirections(event) {
@@ -203,7 +209,8 @@ function filterRecipesBySearch() {
   let recipesByName = recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
   let recipesByTag = recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
   let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
-  populateCards(searchedRecipes);
+  let uniqSearchedRecipes = [...new Set(searchedRecipes)];
+  populateCards(uniqSearchedRecipes);
 }
 
 function addRecipe(event) {
@@ -211,3 +218,5 @@ function addRecipe(event) {
   user.addToMealList(recipeToAdd);
   console.log(user.mealList);
 }
+
+
