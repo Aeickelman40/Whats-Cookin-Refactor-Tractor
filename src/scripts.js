@@ -42,11 +42,12 @@ function onStartup() {
       data.recipeData = allData.recipeData;
     }) 
     .then( () => {
-      let userId = 40;
+      let userId = 28;
       cookbook = new Cookbook(data.recipeData);
       user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
       populateCards(cookbook.recipes);
       greetUser();
+      addRecipeIngredients();
     }) 
     .catch(err => console.log(err.message)) 
 }
@@ -178,6 +179,7 @@ function displayDirections(event) {
   let ingredientsSpan = document.querySelector('.ingredients');
   let instructionsSpan = document.querySelector('.instructions');
   let tagsSpan = document.querySelector('.recipe-tags');
+  data.recipeData;
   recipeObject.ingredients.forEach(ingredient => {
     ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
     ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
@@ -251,4 +253,20 @@ function filterRecipesBySearch() {
   let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
   let uniqSearchedRecipes = [...new Set(searchedRecipes)];
   populateCards(uniqSearchedRecipes);
+}
+
+function addRecipe(event) {
+  let recipeToAdd = data.recipeData.find(recipe => recipe.id === Number(event.target.id));
+  user.addToMealList(recipeToAdd);
+  console.log(user.mealList);
+}
+
+function addRecipeIngredients() {
+  data.recipeData.forEach(recipe => recipe.ingredients.forEach(ingredient => {
+    data.ingredientsData.forEach(ingredientFromData => {
+      if (ingredientFromData.id === ingredient.id) {
+        ingredient.name = ingredientFromData.name;
+      }
+    })
+  }))
 }

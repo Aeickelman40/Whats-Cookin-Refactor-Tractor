@@ -37,6 +37,7 @@ class User {
     });
   }
   addToMealList(recipe) {
+
     if (typeof recipe !== 'object') {
       this.mealList.push(null);
       return;
