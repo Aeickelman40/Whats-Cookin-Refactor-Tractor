@@ -18,6 +18,7 @@ const data = {
 }
 
 const favButton = document.querySelector('.view-favorites');
+const mealButton = document.querySelector('.view-meals')
 const homeButton = document.querySelector('.home')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
@@ -27,6 +28,7 @@ let user, pantry;
 
 homeButton.addEventListener('click', cardButtonConditionals);
 favButton.addEventListener('click', viewFavorites);
+mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
 
@@ -48,6 +50,44 @@ function onStartup() {
       addRecipeIngredients();
     }) 
     .catch(err => console.log(err.message)) 
+}
+
+function addRecipe(event) {
+  let recipeToAdd = data.recipeData.find(recipe =>recipe.id === Number(event.target.id));
+  user.addToMealList(recipeToAdd);
+  console.log(user.mealList);
+}
+
+function displayAddedMeals() {
+  if (cardArea.classList.contains('all')) {
+    cardArea.classList.remove('all')
+  }
+  if (!user.mealList.length) {
+    mealButton.innerHTML = 'You have no meals yet';
+    populateCards(cookbook.recipes);
+    return
+  } else {
+    mealButton.innerHTML = 'Refresh Meals'
+    cardArea.innerHTML = '';
+    user.mealList.forEach(recipe => {
+      cardArea.insertAdjacentHTML('afterbegin', `<section id='${recipe.id}'
+      class='card'>
+      <header id='${recipe.id}' class='card-header'>
+      <label for='add-button' class='hidden'>Click to add recipe</label>
+      <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
+      <img id='${recipe.id}' class='add-button'
+      src='https://image.flaticon.com/icons/svg/32/32339.svg' alt='Add to
+      recipes to cook'></button>
+      <label for='favorite-button' class='hidden'>Click to favorite recipe
+      </label>
+      <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite-active card-button'>
+      </button></header>
+      <span id='${recipe.name}' class='recipe-name'>${recipe.name}</span>
+      <img id='${recipe.id}' tabindex='0' class='card-picture'
+      src='${recipe.image}' alt='Food from recipe'>
+      </section>`)
+    })
+  }
 }
 
 function viewFavorites() {
@@ -115,7 +155,6 @@ function cardButtonConditionals(event) {
     favButton.innerHTML = 'View Favorites';
     populateCards(cookbook.recipes);
   } 
-
 }
 
 function displayDirections(event) {

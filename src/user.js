@@ -40,22 +40,18 @@ class User {
 
     if (typeof recipe !== 'object') {
       this.mealList.push(null);
-      return ;
-    }
-    
-    // this.pantry.contents.forEach(item => console.log(item))
-    // console.log(recipe.ingredients)
-    if (!this.mealList.includes(recipe) && 
-      this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
+      return;
+    } else if (!this.mealList.includes(recipe) && this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
       this.mealList.push(recipe);
+      console.log(this.mealList);
     } else if (!this.mealList.includes(recipe)) {
       let tempIngredients = this.pantry.checkPantry(recipe.ingredients);
       let newIngredients = this.shoppingList.concat(tempIngredients);
       let uniqIngredients = [...new Set(newIngredients)];
       this.shoppingList = uniqIngredients;
+      console.log(this.shoppingList)
     }
   }
-
 }
 
 
