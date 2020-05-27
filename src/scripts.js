@@ -45,14 +45,7 @@ function onStartup() {
       user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
       populateCards(cookbook.recipes);
       greetUser();
-      data.recipeData.forEach(recipe => recipe.ingredients.forEach(ingredient => {
-        data.ingredientsData.forEach(ingredientFromData => {
-          if (ingredientFromData.id === ingredient.id) {
-            ingredient.name = ingredientFromData.name;
-          }
-        })
-      }))
-
+      addRecipeIngredients();
     }) 
     .catch(err => console.log(err.message)) 
 }
@@ -229,4 +222,12 @@ function addRecipe(event) {
   console.log(user.mealList);
 }
 
-
+function addRecipeIngredients() {
+  data.recipeData.forEach(recipe => recipe.ingredients.forEach(ingredient => {
+    data.ingredientsData.forEach(ingredientFromData => {
+      if (ingredientFromData.id === ingredient.id) {
+        ingredient.name = ingredientFromData.name;
+      }
+    })
+  }))
+}
