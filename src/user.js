@@ -37,10 +37,14 @@ class User {
     });
   }
   addToMealList(recipe) {
+
     if (typeof recipe !== 'object') {
       this.mealList.push(null);
       return ;
     }
+    
+    // this.pantry.contents.forEach(item => console.log(item))
+    // console.log(recipe.ingredients)
     if (!this.mealList.includes(recipe) && 
       this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
       this.mealList.push(recipe);

@@ -40,11 +40,19 @@ function onStartup() {
       data.recipeData = allData.recipeData;
     }) 
     .then( () => {
-      let userId = 40;
+      let userId = 28;
       cookbook = new Cookbook(data.recipeData);
       user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
       populateCards(cookbook.recipes);
       greetUser();
+      data.recipeData.forEach(recipe => recipe.ingredients.forEach(ingredient => {
+        data.ingredientsData.forEach(ingredientFromData => {
+          if (ingredientFromData.id === ingredient.id) {
+            ingredient.name = ingredientFromData.name;
+          }
+        })
+      }))
+
     }) 
     .catch(err => console.log(err.message)) 
 }
@@ -123,7 +131,7 @@ function displayDirections(event) {
       return recipe;
     }
   })
-  let recipeObject = new Recipe(newRecipeInfo, ingredientsData);
+  let recipeObject = new Recipe(newRecipeInfo, data.ingredientsData);
   let cost = recipeObject.calculateCost()
   let costInDollars = (cost / 100).toFixed(2)
   cardArea.classList.add('all');
@@ -139,6 +147,7 @@ function displayDirections(event) {
   let ingredientsSpan = document.querySelector('.ingredients');
   let instructionsSpan = document.querySelector('.instructions');
   let tagsSpan = document.querySelector('.recipe-tags');
+  data.recipeData;
   recipeObject.ingredients.forEach(ingredient => {
     ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
     ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
@@ -215,7 +224,7 @@ function filterRecipesBySearch() {
 }
 
 function addRecipe(event) {
-  let recipeToAdd = data.recipeData.find(recipe =>recipe.id === Number(event.target.id));
+  let recipeToAdd = data.recipeData.find(recipe => recipe.id === Number(event.target.id));
   user.addToMealList(recipeToAdd);
   console.log(user.mealList);
 }
