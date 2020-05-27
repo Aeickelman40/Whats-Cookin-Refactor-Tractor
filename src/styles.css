@@ -8,6 +8,7 @@ body {
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
   margin: auto;
+  display: flex;
 }
 
 
@@ -114,6 +115,14 @@ h1 {
   background-repeat: no-repeat;
   background-position: center;
   width: 13%;
+}
+
+.shopping-list-sec {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  width: 380px;
 }
 
 .all-cards {
