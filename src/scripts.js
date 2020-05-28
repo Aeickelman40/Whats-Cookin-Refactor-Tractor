@@ -21,6 +21,7 @@ const favButton = document.querySelector('.view-favorites');
 const mealButton = document.querySelector('.view-meals');
 const homeButton = document.querySelector('.home');
 const pantryButton = document.querySelector('.view-pantry');
+const shoppingListButton = document.querySelector('.view-shopping-list')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
 let cookbook;
@@ -32,7 +33,9 @@ favButton.addEventListener('click', viewFavorites);
 mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
-pantryButton.addEventListener('click', displayPantry)
+pantryButton.addEventListener('click', displayPantry);
+shoppingListButton.addEventListener('click', displayShoppingList);
+
 window.onload = onStartup;
 
 function onStartup() {
@@ -44,17 +47,21 @@ function onStartup() {
     }) 
     .then( () => {
       let userId = 28;
+      
+      addRecipeIngredients();
       cookbook = new Cookbook(data.recipeData);
       user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
+      addRecipesInfo();
       populateCards(cookbook.recipes);
       greetUser();
-      addRecipeIngredients();
+  
     }) 
     .catch(err => console.log(err.message)) 
 }
 
 function addRecipe(event) {
   let recipeToAdd = data.recipeData.find(recipe =>recipe.id === Number(event.target.id));
+
   user.addToMealList(recipeToAdd);
 }
 
@@ -89,7 +96,7 @@ function viewFavorites() {
 function greetUser() {
   const userName = document.querySelector('.user-name');
   userName.innerHTML = user.name;
- // user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
+  // user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
 }
 
 function favoriteCard(event) {
@@ -166,11 +173,11 @@ function displayDirections(event) {
 }
 
 function getFavorites() {
-  //if (user.favoriteRecipes.length) {
-  user.favoriteRecipes.forEach(recipe => {
-    document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active')
-  })
-  //}
+  if (user.favoriteRecipes.length) {
+    user.favoriteRecipes.forEach(recipe => {
+      document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active')
+    })
+  }
 }
 
 function populateCards(recipes) {
@@ -208,8 +215,8 @@ function filterRecipesBySearch() {
   let recipesByName = data.recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
   let recipesByTag = data.recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
   let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
-  let uniqSearchedRecipes = [...new Set(searchedRecipes)];
-  populateCards(uniqSearchedRecipes);
+  let uniqueSearchedRecipes = [...new Set(searchedRecipes)];
+  populateCards(uniqueSearchedRecipes);
 }
 
 function addRecipeIngredients() {
@@ -218,24 +225,41 @@ function addRecipeIngredients() {
       data.ingredientsData.find(ingredientFromData => {
         if (ingredientFromData.id === recipeIngredient.id) {
           recipeIngredient.name = ingredientFromData.name;
+          ingredientFromData.unit = recipeIngredient.quantity.unit;
         }
+        
       })
     }))
   //Add ingredient names to pantry
-  user.pantry.contents.forEach(pantryIngredient =>{
-    data.ingredientsData.find(ingredientFromData => {
-      if (pantryIngredient.ingredient === ingredientFromData.id) {
-        pantryIngredient.name = ingredientFromData.name;
-      }
-    })
-  })
   
 }
 
+function addRecipesInfo() {
+  user.pantry.contents.forEach(pantryIngredient => {
+    data.ingredientsData.find(ingredientFromData => {
+      if (pantryIngredient.ingredient === ingredientFromData.id) {
+        pantryIngredient.name = ingredientFromData.name;
+        pantryIngredient.unit = ingredientFromData.unit;
+      }
+    })
+  })
+}
 function displayPantry() {
+  // Attempt to pull amount names into the display(tablespoon, etc.)
   cardArea.innerHTML = '';
   user.pantry.contents.forEach(ingredient => {
-    let ingredientHtml = `<li> ${ingredient.name}</li>`;
+    //console.log(ingredient)
+    let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
     cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
   });
 }
+
+function displayShoppingList() {
+  cardArea.innerHTML = '';
+  user.shoppingList.forEach((ingredient) => {
+    //console.log(ingredient)
+    let listHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
+    cardArea.insertAdjacentHTML('afterbegin', listHtml)
+  })
+}
+export default data;

@@ -1,14 +1,15 @@
 import ingredientsData from "./data/ingredients";
-
+import data from "./scripts";
 class Pantry {
   constructor(user, contents) {
     this.user = user;
     this.contents = contents;
   }
   checkPantry(recipeIngredients) {
+// Break down into smaller functions, this could maybe be a helper function
+
     let counter = 0;
     let missingIngredients = [];
-    // Breaks at this.user.pantry.forEach when invoking addMealToList in the user class
     recipeIngredients.forEach(recipeIngredient => {
       this.user.pantry.contents.forEach(pantryItem => {
         if (pantryItem.ingredient === recipeIngredient.id) {
@@ -24,8 +25,9 @@ class Pantry {
       return 'You have the ingredients!';
     }
     return missingIngredients.map(ingredient => {
+
       let tempEstimatedCost;
-      ingredientsData.find(specificIngredient => {
+      data.ingredientsData.find(specificIngredient => {
         if (specificIngredient.id === ingredient.id) {
           tempEstimatedCost = specificIngredient.estimatedCostInCents
         }
@@ -33,7 +35,8 @@ class Pantry {
       return {
         id: ingredient.id,
         name: ingredient.name,
-        estimatedCostInCents: tempEstimatedCost
+        estimatedCostInCents: tempEstimatedCost,
+        unit: ingredient.quantity.unit
       }
     })
   }
