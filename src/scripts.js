@@ -21,6 +21,7 @@ const favButton = document.querySelector('.view-favorites');
 const mealButton = document.querySelector('.view-meals');
 const homeButton = document.querySelector('.home');
 const pantryButton = document.querySelector('.view-pantry');
+const shoppingListButton = document.querySelector('.view-shopping-list')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
 let cookbook;
@@ -32,7 +33,9 @@ favButton.addEventListener('click', viewFavorites);
 mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
-pantryButton.addEventListener('click', displayPantry)
+pantryButton.addEventListener('click', displayPantry);
+shoppingListButton.addEventListener('click', displayShoppingList);
+
 window.onload = onStartup;
 
 function onStartup() {
@@ -49,6 +52,7 @@ function onStartup() {
       populateCards(cookbook.recipes);
       greetUser();
       addRecipeIngredients();
+      console.log(data.recipeData)
     }) 
     .catch(err => console.log(err.message)) 
 }
@@ -208,8 +212,8 @@ function filterRecipesBySearch() {
   let recipesByName = data.recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
   let recipesByTag = data.recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
   let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
-  let uniqSearchedRecipes = [...new Set(searchedRecipes)];
-  populateCards(uniqSearchedRecipes);
+  let uniqueSearchedRecipes = [...new Set(searchedRecipes)];
+  populateCards(uniqueSearchedRecipes);
 }
 
 function addRecipeIngredients() {
@@ -233,9 +237,19 @@ function addRecipeIngredients() {
 }
 
 function displayPantry() {
+  // Attempt to pull amount names into the display(tablespoon, etc.)
   cardArea.innerHTML = '';
   user.pantry.contents.forEach(ingredient => {
-    let ingredientHtml = `<li> ${ingredient.name}</li>`;
+    let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount}</li>`
     cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
   });
 }
+
+function displayShoppingList() {
+  cardArea.innerHTML = '';
+  user.shoppingList.forEach(ingredient => {
+    let listHtml = `<li> ${ingredient.name}, ${ingredient.amount}</li>`
+    cardArea.insertAdjacentHTML('afterbegin', listHtml)
+  })
+}
+export default data;
