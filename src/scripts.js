@@ -25,7 +25,7 @@ const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
 let cookbook;
 let searchInput = document.querySelector('.search-input');
-let user, pantry;
+let user;
 
 homeButton.addEventListener('click', cardButtonConditionals);
 favButton.addEventListener('click', viewFavorites);
@@ -56,17 +56,15 @@ function onStartup() {
 function addRecipe(event) {
   let recipeToAdd = data.recipeData.find(recipe =>recipe.id === Number(event.target.id));
   user.addToMealList(recipeToAdd);
-  console.log(user.mealList);
 }
 
 function displayAddedMeals() {
-  if (cardArea.classList.contains('all')) {
-    cardArea.classList.remove('all')
-  }
+  // if (cardArea.classList.contains('all')) {
+  //   cardArea.classList.remove('all')
+  // }
   if (!user.mealList.length) {
     mealButton.innerHTML = 'You have no meals yet';
     populateCards(cookbook.recipes);
-    return
   } else {
     cardArea.innerHTML = '';
     populateCards(user.mealList);
@@ -74,9 +72,9 @@ function displayAddedMeals() {
 }
 
 function viewFavorites() {
-  if (cardArea.classList.contains('all')) {
-    cardArea.classList.remove('all')
-  }
+  // if (cardArea.classList.contains('all')) {
+  //   cardArea.classList.remove('all')
+  // }
   if (!user.favoriteRecipes.length) {
     favButton.innerHTML = 'You have no favorites!';
     populateCards(cookbook.recipes);
@@ -90,8 +88,8 @@ function viewFavorites() {
 
 function greetUser() {
   const userName = document.querySelector('.user-name');
-  userName.innerHTML =
-  user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
+  userName.innerHTML = user.name;
+ // user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
 }
 
 function favoriteCard(event) {
@@ -100,6 +98,8 @@ function favoriteCard(event) {
       return recipe;
     }
   })
+  specificRecipe.favorited = true;
+  
   if (!event.target.classList.contains('favorite-active')) {
     event.target.classList.add('favorite-active');
     favButton.innerHTML = 'View Favorites';
@@ -166,20 +166,18 @@ function displayDirections(event) {
 }
 
 function getFavorites() {
-  if (user.favoriteRecipes.length) {
-    user.favoriteRecipes.forEach(recipe => {
-      document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active')
-    })
-  } else {
-    return
-  }
+  //if (user.favoriteRecipes.length) {
+  user.favoriteRecipes.forEach(recipe => {
+    document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active')
+  })
+  //}
 }
 
 function populateCards(recipes) {
   cardArea.innerHTML = '';
-  if (cardArea.classList.contains('all')) {
-    cardArea.classList.remove('all')
-  }
+  // if (cardArea.classList.contains('all')) {
+  //   cardArea.classList.remove('all')
+  // }
   recipes.forEach(recipe => {
     cardArea.insertAdjacentHTML('afterbegin', `<section id='${recipe.id}'
     class='card'>
@@ -187,13 +185,9 @@ function populateCards(recipes) {
           <label for='add-button' class='hidden'>Click to add recipe</label>
           <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
           ADD</button>
-          <label for='favorite-button' class='hidden'>Click to favorite recipe
-          </label>
           <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
         </header>
           <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
-          <span id='${recipe.id}' class='recipe-ingredients hidden'>${recipe.ingredients}</span> 
-          <span id='${recipe.id}' class='recipe-tags hidden'>${recipe.tags}</span> 
           <img id='${recipe.id}' tabindex='0' class='card-picture'
           src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
     </section>`)
@@ -227,6 +221,7 @@ function addRecipeIngredients() {
         }
       })
     }))
+  //Add ingredient names to pantry
   user.pantry.contents.forEach(pantryIngredient =>{
     data.ingredientsData.find(ingredientFromData => {
       if (pantryIngredient.ingredient === ingredientFromData.id) {
@@ -238,15 +233,9 @@ function addRecipeIngredients() {
 }
 
 function displayPantry() {
-  let pantryList = document.querySelector(".pantry-list");
+  cardArea.innerHTML = '';
   user.pantry.contents.forEach(ingredient => {
     let ingredientHtml = `<li> ${ingredient.name}</li>`;
-    pantryList.insertAdjacentHTML("beforebegin", ingredientHtml);
+    cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
   });
-  if (pantryList.classList.contains('hidden')) {
-    pantryList.classList.remove('hidden');
-  } else {
-    pantryList.classList.add('hidden');
-  }
-
 }
