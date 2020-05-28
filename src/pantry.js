@@ -25,6 +25,7 @@ class Pantry {
       return 'You have the ingredients!';
     }
     return missingIngredients.map(ingredient => {
+
       let tempEstimatedCost;
       data.ingredientsData.find(specificIngredient => {
         if (specificIngredient.id === ingredient.id) {
@@ -34,7 +35,8 @@ class Pantry {
       return {
         id: ingredient.id,
         name: ingredient.name,
-        estimatedCostInCents: tempEstimatedCost
+        estimatedCostInCents: tempEstimatedCost,
+        unit: ingredient.quantity.unit
       }
     })
   }
