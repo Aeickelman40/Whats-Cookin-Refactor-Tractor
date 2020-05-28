@@ -18,8 +18,9 @@ const data = {
 }
 
 const favButton = document.querySelector('.view-favorites');
-const mealButton = document.querySelector('.view-meals')
-const homeButton = document.querySelector('.home')
+const mealButton = document.querySelector('.view-meals');
+const homeButton = document.querySelector('.home');
+const pantryButton = document.querySelector('.view-pantry');
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
 let cookbook;
@@ -31,7 +32,7 @@ favButton.addEventListener('click', viewFavorites);
 mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
-
+pantryButton.addEventListener('click', displayPantry)
 window.onload = onStartup;
 
 function onStartup() {
@@ -219,11 +220,33 @@ function filterRecipesBySearch() {
 
 function addRecipeIngredients() {
   data.recipeData.forEach(recipe => 
-    recipe.ingredients.forEach(ingredient => {
+    recipe.ingredients.forEach(recipeIngredient => {
       data.ingredientsData.find(ingredientFromData => {
-        if (ingredientFromData.id === ingredient.id) {
-          ingredient.name = ingredientFromData.name;
+        if (ingredientFromData.id === recipeIngredient.id) {
+          recipeIngredient.name = ingredientFromData.name;
         }
       })
     }))
+  user.pantry.contents.forEach(pantryIngredient =>{
+    data.ingredientsData.find(ingredientFromData => {
+      if (pantryIngredient.ingredient === ingredientFromData.id) {
+        pantryIngredient.name = ingredientFromData.name;
+      }
+    })
+  })
+  
+}
+
+function displayPantry() {
+  let pantryList = document.querySelector(".pantry-list");
+  user.pantry.contents.forEach(ingredient => {
+    let ingredientHtml = `<li> ${ingredient.name}</li>`;
+    pantryList.insertAdjacentHTML("beforebegin", ingredientHtml);
+  });
+  if (pantryList.classList.contains('hidden')) {
+    pantryList.classList.remove('hidden');
+  } else {
+    pantryList.classList.add('hidden');
+  }
+
 }

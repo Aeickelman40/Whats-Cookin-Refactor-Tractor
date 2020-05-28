@@ -194,3 +194,27 @@ main {
   background-image: url(https://image.flaticon.com/icons/svg/148/148841.svg);
   background-repeat: no-repeat;
 }
+
+.drop-menu {
+  align-items: center;
+  background-color: #DAE4EE;
+  display: none;
+  height: 600px;
+  margin-left: 81%;
+  margin-top: 92px;
+  overflow: scroll;
+  padding: 12px;
+  position: absolute;
+  text-align: center;
+  width: 250px;
+  z-index: 3;
+}
+
+.pantry-list {
+  color: #000000;
+  height: 100px;
+  width: 100px;
+  align-self: center;
+  text-align: center;
+  visibility: hidden;
+}
