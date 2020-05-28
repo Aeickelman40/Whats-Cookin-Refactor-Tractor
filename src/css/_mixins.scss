@@ -5,9 +5,9 @@
             border-radius: $radius;
   }
 
-@mixin borders($border-style) {
-    -webkit-border: border-style;
-       -moz-border: border-style;
-        -ms-border: border-style;
-            border: border-style;
-}
+// @mixin borders($px, $style, $color) {
+//     -webkit-border: $border-style;
+//        -moz-border: $border-style;
+//         -ms-border: $border-style;
+//             border: $border-style;
+// }

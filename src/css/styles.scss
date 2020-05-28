@@ -136,7 +136,7 @@ img {
   background-color: $white;
   border: 3px solid $black;
   width: 100%;
-  @include rounded-corners(10px);
+  border-radius: 10px;
 }
 
 
@@ -145,7 +145,7 @@ img {
   border-bottom: $small-border;
   display: flex;
   justify-content: space-between;
-  @include rounded-corners(10px);
+  border-radius: 10px;
 }
 
 .all {
@@ -155,13 +155,13 @@ img {
 
 .all-recipe-info,
 ol {
-  color: $recipe-color;
+  color: $recipe-text-color;
   font-size: 125%;
   width: 100%;
 }
 
 h3 {
-  color: $recipe-color;
+  color: $recipe-text-color;
   font-size: 250%;
 }
 
