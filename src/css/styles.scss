@@ -2,8 +2,8 @@
 @import "mixins";
 
 html {
-  background-color: #37515C;
-  border: 2px solid $black;
+  // background-color: rgb(36, 133, 175);
+  border: $thicker-border;
   height: 100vh;
 }
 
@@ -13,10 +13,9 @@ body {
   margin: auto;
 }
 
-
 .main-header {
-  background-color: $white;
-  border: 2px solid $black;
+  background: $header-color;
+  border: $thicker-border;
   display: flex;
   height: auto;
   justify-content: space-between;
@@ -25,14 +24,16 @@ body {
 
 .navButton {
   background-color: $white;
-  border-left: 1px solid $black;
-  border-right: 1px solid $black;
+  border: $small-border;
+  height: 60px;
   font-size: 130%;
   margin: 1%;
+  border-radius: 15px; 
+  margin-top: 27px;
 }
 
 h1 {
-  border-right: 2px solid $black;
+  border-right: $thicker-border;
   font-size: 255%;
   margin-top: 0;
   margin-bottom: 0;
@@ -53,53 +54,54 @@ h1 {
   height: 100%;
   margin: 10px 0px 10px 0px;
   width: 30%;
+  // border-radius: 15px;
 }
 
 .search-button {
   background-color: $white;
-  border: 1px solid $black;
+  border: $small-border;
   width: 20%;
-  height: 58px;
-  margin-top: 3px;
+  height: 50px;
+  margin-top: 20px;
+  border-radius: 15px;
 }
 
 .search-image:hover,
 .card-button:hover,
 .navButton:hover,
 .search-button:hover {
-  background-color: #cff2da;
+  background-color: $hover-color;
 }
-
 
 .search-image:active,
 .card-button:active,
 .navButton:active,
 .search-button:active {
-  background-color: #C3C2C6;
+  background-color: $white;
 }
 
 .search-input {
-  border: 1px solid $black;
+  border: $small-border;
   font-size: 100%;
-  height: 7vh;
-  margin: 3px 7px 0px 0px;
-  padding-left: 10px;
+  min-height: 7vh;
+  margin: 20px 7px 0px 10px;
+  padding-left: 5px;
   width: 90%;
 }
 
-
 .card-button {
-  border: 1px solid $black;
+  border: $small-border;
   height: 27px;
+  // width: 27px;
   margin: 3px;
+  border-radius: 5px;
 }
-
-
 
 .add-button {
   background-color: $white;
   display: flex;
   width: 12%;
+  font-size: 12px;
 }
 
 .add {
@@ -109,7 +111,6 @@ h1 {
 .hidden {
   display: none;
 }
-
 
 .favorite {
   background-color: $white;
@@ -132,38 +133,39 @@ img {
 }
 
 .card {
-  background-color: $card-color;
+  background-color: $white;
   border: 3px solid $black;
   width: 100%;
+  @include rounded-corners(10px);
 }
 
 
 .card-header {
-  background-color: $white;
-  border-bottom: 1px solid $black;
+  background-color: $card-color;
+  border-bottom: $small-border;
   display: flex;
   justify-content: space-between;
+  @include rounded-corners(10px);
 }
 
-// .all {
-//   grid-gap: 0px;
-//   grid-template-columns: repeat(1, 1fr);
-// }
+.all {
+  grid-gap: 0px;
+  grid-template-columns: repeat(1, 1fr);
+}
 
 .all-recipe-info,
 ol {
-  color: $white;
-  font-size: 220%;
+  color: $recipe-color;
+  font-size: 125%;
   width: 100%;
 }
 
 h3 {
-  color: $white;
+  color: $recipe-color;
   font-size: 250%;
 }
 
 .recipe-name {
-
   display: block;
   font-size: 150%;
   text-align: center;
@@ -174,18 +176,18 @@ h3 {
 }
 
 .card-picture:active {
-  border: 2px solid $black;
+  border: $thicker-border
 }
 
 .card-picture {
-  border: 1px solid $black;
+  border: $small-border;
   height: 200px;
   margin: 10px 3% 8px 2.6%;
   width: 94%;
 }
 
 main {
-  background-color: #37515C;
+  background-color: $primary-background;
   height: 100%;
   width: 100%;
 }
@@ -195,20 +197,20 @@ main {
   background-repeat: no-repeat;
 }
 
-.drop-menu {
-  align-items: center;
-  background-color: #DAE4EE;
-  display: none;
-  height: 600px;
-  margin-left: 81%;
-  margin-top: 92px;
-  overflow: scroll;
-  padding: 12px;
-  position: absolute;
-  text-align: center;
-  width: 250px;
-  z-index: 3;
-}
+// .drop-menu {
+//   align-items: center;
+//   background-color: #DAE4EE;
+//   display: none;
+//   height: 600px;
+//   margin-left: 81%;
+//   margin-top: 92px;
+//   overflow: scroll;
+//   padding: 12px;
+//   position: absolute;
+//   text-align: center;
+//   width: 250px;
+//   z-index: 3;
+// }
 
 .pantry-list {
   color: #000000;
