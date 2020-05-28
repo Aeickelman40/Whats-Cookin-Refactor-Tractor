@@ -120,6 +120,7 @@ function cardButtonConditionals(event) {
   } else if (event.target.classList.contains('home')) {
     favButton.innerHTML = 'View Favorites';
     populateCards(cookbook.recipes);
+    cardArea.classList.remove('all');
   } 
 }
 
@@ -160,9 +161,8 @@ function displayDirections(event) {
   recipeObject.tags.forEach(tag => {
     tagsSpan.insertAdjacentHTML('beforebegin', `<li>
     ${tag}</li>
-    `)
-  })
-
+    `);
+  });
 }
 
 function getFavorites() {
@@ -184,7 +184,7 @@ function populateCards(recipes) {
         <header id='${recipe.id}' class='card-header'>
           <label for='add-button' class='hidden'>Click to add recipe</label>
           <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
-          ADD</button>
+          add</button>
           <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
         </header>
           <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
