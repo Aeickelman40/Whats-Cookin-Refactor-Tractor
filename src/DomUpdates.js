@@ -1,5 +1,9 @@
 class DomUpdates {
-  returnDirectionsInnerHTML(cardArea,recipeObject, costInDollars) {
+  constructor() {
+    //tried setting querySelectors as properties, didn't work
+    //this.ingredientsSpan = document.querySelector('.ingredients');
+  }
+  returnDirectionsInnerHTML(cardArea , recipeObject, costInDollars) {
     cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
     <p class='all-recipe-info'>
     <strong>It will cost: </strong><span class='cost recipe-info'>
@@ -24,5 +28,35 @@ class DomUpdates {
           src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
     </section>`)
   }
+  displayIngredientsInRecipeInfo(recipeObject, ingredientsSpan, instructionsSpan) {
+    recipeObject.ingredients.forEach(ingredient => {
+      ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
+    ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
+    ${ingredient.name}</li></ul>`)
+    })
+    recipeObject.instructions.forEach(instruction => {
+      instructionsSpan.insertAdjacentHTML('beforebegin', `<li>
+    ${instruction.instruction}</li>`)
+    })
+  }
+  displayTagsInRecipeInfo(recipeObject, tagsSpan) {
+    recipeObject.tags.forEach(tag => {
+      tagsSpan.insertAdjacentHTML('beforebegin', `<li>
+        ${tag}</li>`);
+    });
+  }
+  displayPantryHTML(user, cardArea) {
+    user.pantry.contents.forEach(ingredient => {
+      let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
+      cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
+    })
+  }
+  displayShoppingList(user, cardArea) {
+    user.shoppingList.forEach((ingredient) => {
+      let listHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
+      cardArea.insertAdjacentHTML('afterbegin', listHtml)
+    })
+  }
+  
 }
 export default DomUpdates;

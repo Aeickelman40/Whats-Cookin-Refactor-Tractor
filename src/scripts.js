@@ -8,9 +8,6 @@ import User from './user';
 import Cookbook from './cookbook';
 import DomUpdates from './DomUpdates';
 
-// import recipeData from './data/recipes';
-// import ingredientsData from './data/ingredients';
-// import users from './data/users';
 
 const data = {
   wcUsersData: null,
@@ -48,17 +45,20 @@ function onStartup() {
       data.recipeData = allData.recipeData;
     }) 
     .then( () => {
-      let userId = 28;
-      addRecipeIngredients();
-      cookbook = new Cookbook(data.recipeData);
-      user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
-      domUpdates = new DomUpdates();
+      addRecipeIngredientsDetails();
+      instantiateClasses(data);
       addRecipesInfo();
       populateCards(cookbook.recipes);
       greetUser();
   
     }) 
     .catch(err => console.log(err.message)) 
+}
+function instantiateClasses() {
+  let userId = 28;
+  cookbook = new Cookbook(data.recipeData);
+  user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
+  domUpdates = new DomUpdates();
 }
 
 function addRecipe(event) {
@@ -148,22 +148,9 @@ function displayRecipeInfo(recipeObject) {
   let ingredientsSpan = document.querySelector('.ingredients');
   let instructionsSpan = document.querySelector('.instructions');
   let tagsSpan = document.querySelector('.recipe-tags');
-  recipeObject.ingredients.forEach(ingredient => {
-    ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
-    ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
-    ${ingredient.name}</li></ul>
-    `)
-  })
-  recipeObject.instructions.forEach(instruction => {
-    instructionsSpan.insertAdjacentHTML('beforebegin', `<li>
-    ${instruction.instruction}</li>
-    `)
-  })
-  recipeObject.tags.forEach(tag => {
-    tagsSpan.insertAdjacentHTML('beforebegin', `<li>
-    ${tag}</li>
-    `);
-  });
+
+  domUpdates.displayIngredientsInRecipeInfo(recipeObject, ingredientsSpan, instructionsSpan)
+  domUpdates.displayTagsInRecipeInfo(recipeObject, tagsSpan);
 }
 
 function getFavorites() {
@@ -202,7 +189,7 @@ function filterRecipesBySearch() {
   populateCards(uniqueSearchedRecipes);
 }
 
-function addRecipeIngredients() {
+function addRecipeIngredientsDetails() {
   data.recipeData.forEach(recipe => 
     recipe.ingredients.forEach(recipeIngredient => {
       data.ingredientsData.find(ingredientFromData => {
@@ -213,8 +200,6 @@ function addRecipeIngredients() {
         
       })
     }))
-  //Add ingredient names to pantry
-  
 }
 
 function addRecipesInfo() {
@@ -228,21 +213,12 @@ function addRecipesInfo() {
   })
 }
 function displayPantry() {
-  // Attempt to pull amount names into the display(tablespoon, etc.)
   cardArea.innerHTML = '';
-  user.pantry.contents.forEach(ingredient => {
-    //console.log(ingredient)
-    let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
-    cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
-  });
+  domUpdates.displayPantryHTML(user, cardArea);
 }
 
 function displayShoppingList() {
   cardArea.innerHTML = '';
-  user.shoppingList.forEach((ingredient) => {
-    //console.log(ingredient)
-    let listHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
-    cardArea.insertAdjacentHTML('afterbegin', listHtml)
-  })
+  domUpdates.displayShoppingList(user, cardArea);
 }
 export default data;
