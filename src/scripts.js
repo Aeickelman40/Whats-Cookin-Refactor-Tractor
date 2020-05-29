@@ -66,16 +66,15 @@ function addRecipe(event) {
 }
 
 function displayAddedMeals() {
-  // if (cardArea.classList.contains('all')) {
-  //   cardArea.classList.remove('all')
-  // }
+  if (cardArea.classList.contains('all')) {
+    cardArea.classList.remove('all');
+  }
   if (!user.mealList.length) {
     mealButton.innerHTML = 'You have no meals yet';
-    populateCards(cookbook.recipes);
   } else {
     cardArea.innerHTML = '';
-    populateCards(user.mealList);
   }
+  populateCards(user.mealList);
 }
 
 function viewFavorites() {
@@ -101,7 +100,7 @@ function greetUser() {
 
 function favoriteCard(event) {
   let specificRecipe = cookbook.recipes.find(recipe => {
-    if (recipe.id  === Number(event.target.id)) {
+    if (recipe.id  === Number(event.target.parentNode.id)) {
       return recipe;
     }
   })
@@ -150,10 +149,14 @@ function displayDirections(event) {
   </span></ol>
   <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
   <p>`;
+  displayRecipeInfo(recipeObject)
+  
+}
+function displayRecipeInfo(recipeObject) {
+
   let ingredientsSpan = document.querySelector('.ingredients');
   let instructionsSpan = document.querySelector('.instructions');
   let tagsSpan = document.querySelector('.recipe-tags');
-  data.recipeData;
   recipeObject.ingredients.forEach(ingredient => {
     ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
     ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
@@ -182,9 +185,9 @@ function getFavorites() {
 
 function populateCards(recipes) {
   cardArea.innerHTML = '';
-  // if (cardArea.classList.contains('all')) {
-  //   cardArea.classList.remove('all')
-  // }
+  if (cardArea.classList.contains('all')) {
+    cardArea.classList.remove('all')
+  }
   recipes.forEach(recipe => {
     cardArea.insertAdjacentHTML('afterbegin', `<section id='${recipe.id}'
     class='card'>
