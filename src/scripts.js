@@ -6,6 +6,7 @@ import Pantry from './pantry';
 import Recipe from './recipe';
 import User from './user';
 import Cookbook from './cookbook';
+import DomUpdates from './DomUpdates';
 
 // import recipeData from './data/recipes';
 // import ingredientsData from './data/ingredients';
@@ -27,6 +28,7 @@ const cardArea = document.querySelector('.all-cards');
 let cookbook;
 let searchInput = document.querySelector('.search-input');
 let user;
+let domUpdates;
 
 homeButton.addEventListener('click', cardButtonConditionals);
 favButton.addEventListener('click', viewFavorites);
@@ -47,10 +49,10 @@ function onStartup() {
     }) 
     .then( () => {
       let userId = 28;
-      
       addRecipeIngredients();
       cookbook = new Cookbook(data.recipeData);
       user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
+      domUpdates = new DomUpdates();
       addRecipesInfo();
       populateCards(cookbook.recipes);
       greetUser();
@@ -78,24 +80,21 @@ function displayAddedMeals() {
 }
 
 function viewFavorites() {
-  // if (cardArea.classList.contains('all')) {
-  //   cardArea.classList.remove('all')
-  // }
+  if (cardArea.classList.contains('all')) {
+    cardArea.classList.remove('all')
+  }
   if (!user.favoriteRecipes.length) {
     favButton.innerHTML = 'You have no favorites!';
-    populateCards(cookbook.recipes);
-    return
   } else {
     favButton.innerHTML = 'Refresh Favorites'
     cardArea.innerHTML = '';
-    populateCards(user.favoriteRecipes);
   }
+  populateCards(user.favoriteRecipes);
 }
 
 function greetUser() {
   const userName = document.querySelector('.user-name');
   userName.innerHTML = user.name;
-  // user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
 }
 
 function favoriteCard(event) {
@@ -140,15 +139,7 @@ function displayDirections(event) {
   let cost = recipeObject.calculateCost()
   let costInDollars = (cost / 100).toFixed(2)
   cardArea.classList.add('all');
-  cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
-  <p class='all-recipe-info'>
-  <strong>It will cost: </strong><span class='cost recipe-info'>
-  $${costInDollars}</span><br><br>
-  <strong>You will need: </strong><span class='ingredients recipe-info'></span>
-  <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
-  </span></ol>
-  <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
-  <p>`;
+  domUpdates.returnDirectionsInnerHTML(cardArea, recipeObject, costInDollars);
   displayRecipeInfo(recipeObject)
   
 }
@@ -189,18 +180,7 @@ function populateCards(recipes) {
     cardArea.classList.remove('all')
   }
   recipes.forEach(recipe => {
-    cardArea.insertAdjacentHTML('afterbegin', `<section id='${recipe.id}'
-    class='card'>
-        <header id='${recipe.id}' class='card-header'>
-          <label for='add-button' class='hidden'>Click to add recipe</label>
-          <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
-          add</button>
-          <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
-        </header>
-          <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
-          <img id='${recipe.id}' tabindex='0' class='card-picture'
-          src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
-    </section>`)
+    domUpdates.populateCardsHTML(cardArea, recipe);
   })
   // Why call getFavorites at the end of this?
   getFavorites();
