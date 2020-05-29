@@ -41,7 +41,7 @@ class User {
     if (typeof recipe !== 'object') {
       this.mealList.push(null);
       return;
-    } else if (!this.mealList.includes(recipe) && this.pantry.checkPantry(recipe.ingredients) === 'You have the ingredients!') {
+    } else if (!this.mealList.includes(recipe) && this.pantry.checkRecipeStatus(recipe.ingredients)) {
       this.mealList.push(recipe);
       console.log(this.mealList);
     } else if (!this.mealList.includes(recipe)) {
@@ -50,7 +50,7 @@ class User {
       let newIngredients = this.shoppingList.concat(tempIngredients);
       let uniqIngredients = [...new Set(newIngredients)];
       this.shoppingList = uniqIngredients;
-      console.log(this.shoppingList)
+      // console.log(this.shoppingList)
     }
   }
 }
