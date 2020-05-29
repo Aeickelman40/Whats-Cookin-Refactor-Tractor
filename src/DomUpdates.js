@@ -46,12 +46,14 @@ class DomUpdates {
     });
   }
   displayPantryHTML(user, cardArea) {
+    cardArea.innerHTML = '';
     user.pantry.contents.forEach(ingredient => {
       let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
       cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
     })
   }
   displayShoppingList(user, cardArea) {
+    cardArea.innerHTML = '';
     user.shoppingList.forEach((ingredient) => {
       let listHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
       cardArea.insertAdjacentHTML('afterbegin', listHtml)

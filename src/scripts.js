@@ -32,8 +32,8 @@ favButton.addEventListener('click', viewFavorites);
 mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
-pantryButton.addEventListener('click', displayPantry);
-shoppingListButton.addEventListener('click', displayShoppingList);
+pantryButton.addEventListener('click', () => domUpdates.displayPantryHTML(user, cardArea));
+shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingList(user, cardArea));
 
 window.onload = onStartup;
 
@@ -143,6 +143,7 @@ function displayDirections(event) {
   displayRecipeInfo(recipeObject)
   
 }
+
 function displayRecipeInfo(recipeObject) {
 
   let ingredientsSpan = document.querySelector('.ingredients');
@@ -212,13 +213,3 @@ function addRecipesInfo() {
     })
   })
 }
-function displayPantry() {
-  cardArea.innerHTML = '';
-  domUpdates.displayPantryHTML(user, cardArea);
-}
-
-function displayShoppingList() {
-  cardArea.innerHTML = '';
-  domUpdates.displayShoppingList(user, cardArea);
-}
-export default data;
