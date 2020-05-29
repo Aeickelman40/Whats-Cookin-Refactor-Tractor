@@ -2,7 +2,7 @@
 @import "mixins";
 
 html {
-  // background-color: rgb(36, 133, 175);
+  background-color: rgb(36, 133, 175);
   border: $thicker-border;
   height: 100vh;
 }
@@ -80,7 +80,7 @@ h1 {
   background-color: $white;
 }
 
-.search-input {
+#search-input {
   border: $small-border;
   font-size: 100%;
   min-height: 7vh;
@@ -196,21 +196,6 @@ main {
   background-image: url(https://image.flaticon.com/icons/svg/148/148841.svg);
   background-repeat: no-repeat;
 }
-
-// .drop-menu {
-//   align-items: center;
-//   background-color: #DAE4EE;
-//   display: none;
-//   height: 600px;
-//   margin-left: 81%;
-//   margin-top: 92px;
-//   overflow: scroll;
-//   padding: 12px;
-//   position: absolute;
-//   text-align: center;
-//   width: 250px;
-//   z-index: 3;
-// }
 
 .pantry-list {
   color: #000000;
