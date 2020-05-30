@@ -6,10 +6,8 @@ import Pantry from './pantry';
 import Recipe from './recipe';
 import User from './user';
 import Cookbook from './cookbook';
+import DomUpdates from './DomUpdates';
 
-// import recipeData from './data/recipes';
-// import ingredientsData from './data/ingredients';
-// import users from './data/users';
 
 const data = {
   wcUsersData: null,
@@ -27,14 +25,15 @@ const cardArea = document.querySelector('.all-cards');
 let cookbook;
 let searchInput = document.querySelector('.search-input');
 let user;
+let domUpdates;
 
 homeButton.addEventListener('click', cardButtonConditionals);
 favButton.addEventListener('click', viewFavorites);
 mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
-pantryButton.addEventListener('click', displayPantry);
-shoppingListButton.addEventListener('click', displayShoppingList);
+pantryButton.addEventListener('click', () => domUpdates.displayPantryHTML(user, cardArea));
+shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingList(user, cardArea));
 
 window.onload = onStartup;
 
@@ -46,17 +45,20 @@ function onStartup() {
       data.recipeData = allData.recipeData;
     }) 
     .then( () => {
-      let userId = 28;
-      
-      addRecipeIngredients();
-      cookbook = new Cookbook(data.recipeData);
-      user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
+      addRecipeIngredientsDetails();
+      instantiateClasses(data);
       addRecipesInfo();
       populateCards(cookbook.recipes);
       greetUser();
   
     }) 
     .catch(err => console.log(err.message)) 
+}
+function instantiateClasses() {
+  let userId = 28;
+  cookbook = new Cookbook(data.recipeData);
+  user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
+  domUpdates = new DomUpdates();
 }
 
 function addRecipe(event) {
@@ -78,24 +80,21 @@ function displayAddedMeals() {
 }
 
 function viewFavorites() {
-  // if (cardArea.classList.contains('all')) {
-  //   cardArea.classList.remove('all')
-  // }
+  if (cardArea.classList.contains('all')) {
+    cardArea.classList.remove('all')
+  }
   if (!user.favoriteRecipes.length) {
     favButton.innerHTML = 'You have no favorites!';
-    populateCards(cookbook.recipes);
-    return
   } else {
     favButton.innerHTML = 'Refresh Favorites'
     cardArea.innerHTML = '';
-    populateCards(user.favoriteRecipes);
   }
+  populateCards(user.favoriteRecipes);
 }
 
 function greetUser() {
   const userName = document.querySelector('.user-name');
   userName.innerHTML = user.name;
-  // user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
 }
 
 function favoriteCard(event) {
@@ -140,39 +139,19 @@ function displayDirections(event) {
   let cost = recipeObject.calculateCost()
   let costInDollars = (cost / 100).toFixed(2)
   cardArea.classList.add('all');
-  cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
-  <p class='all-recipe-info'>
-  <strong>It will cost: </strong><span class='cost recipe-info'>
-  $${costInDollars}</span><br><br>
-  <strong>You will need: </strong><span class='ingredients recipe-info'></span>
-  <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
-  </span></ol>
-  <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
-  <p>`;
+  domUpdates.returnDirectionsInnerHTML(cardArea, recipeObject, costInDollars);
   displayRecipeInfo(recipeObject)
   
 }
+
 function displayRecipeInfo(recipeObject) {
 
   let ingredientsSpan = document.querySelector('.ingredients');
   let instructionsSpan = document.querySelector('.instructions');
   let tagsSpan = document.querySelector('.recipe-tags');
-  recipeObject.ingredients.forEach(ingredient => {
-    ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
-    ${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
-    ${ingredient.name}</li></ul>
-    `)
-  })
-  recipeObject.instructions.forEach(instruction => {
-    instructionsSpan.insertAdjacentHTML('beforebegin', `<li>
-    ${instruction.instruction}</li>
-    `)
-  })
-  recipeObject.tags.forEach(tag => {
-    tagsSpan.insertAdjacentHTML('beforebegin', `<li>
-    ${tag}</li>
-    `);
-  });
+
+  domUpdates.displayIngredientsInRecipeInfo(recipeObject, ingredientsSpan, instructionsSpan)
+  domUpdates.displayTagsInRecipeInfo(recipeObject, tagsSpan);
 }
 
 function getFavorites() {
@@ -189,18 +168,7 @@ function populateCards(recipes) {
     cardArea.classList.remove('all')
   }
   recipes.forEach(recipe => {
-    cardArea.insertAdjacentHTML('afterbegin', `<section id='${recipe.id}'
-    class='card'>
-        <header id='${recipe.id}' class='card-header'>
-          <label for='add-button' class='hidden'>Click to add recipe</label>
-          <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
-          add</button>
-          <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
-        </header>
-          <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
-          <img id='${recipe.id}' tabindex='0' class='card-picture'
-          src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
-    </section>`)
+    domUpdates.populateCardsHTML(cardArea, recipe);
   })
   // Why call getFavorites at the end of this?
   getFavorites();
@@ -222,7 +190,7 @@ function filterRecipesBySearch() {
   populateCards(uniqueSearchedRecipes);
 }
 
-function addRecipeIngredients() {
+function addRecipeIngredientsDetails() {
   data.recipeData.forEach(recipe => 
     recipe.ingredients.forEach(recipeIngredient => {
       data.ingredientsData.find(ingredientFromData => {
@@ -233,8 +201,6 @@ function addRecipeIngredients() {
         
       })
     }))
-  //Add ingredient names to pantry
-  
 }
 
 function addRecipesInfo() {
@@ -247,22 +213,3 @@ function addRecipesInfo() {
     })
   })
 }
-function displayPantry() {
-  // Attempt to pull amount names into the display(tablespoon, etc.)
-  cardArea.innerHTML = '';
-  user.pantry.contents.forEach(ingredient => {
-    //console.log(ingredient)
-    let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
-    cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
-  });
-}
-
-function displayShoppingList() {
-  cardArea.innerHTML = '';
-  user.shoppingList.forEach((ingredient) => {
-    //console.log(ingredient)
-    let listHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
-    cardArea.insertAdjacentHTML('afterbegin', listHtml)
-  })
-}
-export default data;

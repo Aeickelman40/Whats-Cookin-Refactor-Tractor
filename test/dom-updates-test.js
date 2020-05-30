@@ -9,6 +9,8 @@ let domUpdates;
 describe('DomUpdates', () => {
   beforeEach(() => {
     domUpdates = new DomUpdates();
+    global.document = {};
+    chai.spy.on(document, ['innerHTML'], () => { })
   });
 
   it('Should be a function', () => {
