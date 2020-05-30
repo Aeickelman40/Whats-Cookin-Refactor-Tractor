@@ -97,16 +97,17 @@ h1 {
 
 .add-button {
   background-color: $white;
-  // background-image: url(<div>Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>);
-  display: flex;
-  width: 12%;
-  font-size: 12px;
+  background-image: url(https://image.flaticon.com/icons/svg/747/747944.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  width: 13%;
 }
 
-.add {
-  //what is this doing?
-  // width: 100%;
-}
+// .add {
+//   //what is this doing?
+//   width: 100%;
+// }
 
 .hidden {
   display: none;

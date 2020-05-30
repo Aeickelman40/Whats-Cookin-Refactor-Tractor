@@ -178,7 +178,7 @@ function filterRecipesBySearch() {
   event.preventDefault();
   let recipesByIngredient = data.recipeData.filter(recipe => {
     let filteredIngredients = recipe.ingredients.filter(ingredient => 
-      ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase())) 
+      ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase()))
     if (filteredIngredients.length > 0) {
       return true;
     }

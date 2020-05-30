@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 import { expect } from 'chai';
-import users from '../src/data/users';
+import users from '../src/test-data/users-test-data';
 import User from '../src/user.js';
 import Pantry from '../src/pantry.js';
-import recipeData from '../src/data/recipes.js';
+import recipeTestData from '../src/test-data/recipes-test-data.js';
 
 describe('User', () => {
 

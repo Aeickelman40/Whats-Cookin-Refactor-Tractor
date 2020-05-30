@@ -1,4 +1,4 @@
-import ingredientsData from "./data/ingredients";
+import ingredientsData from "./test-data/ingredients-test-data";
 
 class Pantry {
   constructor(user, contents) {
@@ -6,6 +6,7 @@ class Pantry {
     this.contents = contents;
     this.missingIngredients = []
   }
+
   checkPantry() {
     return this.missingIngredients.map(ingredient => {
       let tempEstimatedCost;
@@ -15,12 +16,13 @@ class Pantry {
         }
       })
       return {
+        estimatedCostInCents: tempEstimatedCost,
         id: ingredient.id,
-        name: ingredient.name,
-        estimatedCostInCents: tempEstimatedCost
+        name: ingredient.name 
       }
     })
   }
+
   checkRecipeStatus(recipeIngredients) {
     let counter = 0;
     recipeIngredients.forEach(recipeIngredient => {
