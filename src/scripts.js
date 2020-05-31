@@ -23,7 +23,7 @@ const shoppingListButton = document.querySelector('.view-shopping-list')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
 let cookbook;
-let searchInput = document.querySelector('.search-input');
+let searchInput = document.querySelector('#search-input');
 let user;
 let domUpdates;
 
@@ -178,7 +178,7 @@ function filterRecipesBySearch() {
   event.preventDefault();
   let recipesByIngredient = data.recipeData.filter(recipe => {
     let filteredIngredients = recipe.ingredients.filter(ingredient => 
-      ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase()))
+      ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase())) 
     if (filteredIngredients.length > 0) {
       return true;
     }

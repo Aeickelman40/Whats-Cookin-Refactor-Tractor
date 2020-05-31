@@ -3,8 +3,7 @@ class DomUpdates {
     //tried setting querySelectors as properties, didn't work
     //this.ingredientsSpan = document.querySelector('.ingredients');
   }
-
-  returnDirectionsInnerHTML(cardArea, recipeObject, costInDollars) {
+  returnDirectionsInnerHTML(cardArea , recipeObject, costInDollars) {
     cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
     <p class='all-recipe-info'>
     <strong>It will cost: </strong><span class='cost recipe-info'>
@@ -15,7 +14,6 @@ class DomUpdates {
     <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
     <p>`
   }
-
   populateCardsHTML(cardArea, recipe) {
     cardArea.insertAdjacentHTML('afterbegin', 
       `<section id='${recipe.id}'class='card'>
@@ -27,9 +25,8 @@ class DomUpdates {
           <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
           <img id='${recipe.id}' tabindex='0' class='card-picture'
           src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
-      </section>`)
+    </section>`)
   }
-
   displayIngredientsInRecipeInfo(recipeObject, ingredientsSpan, instructionsSpan) {
     recipeObject.ingredients.forEach(ingredient => {
       ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
@@ -41,14 +38,12 @@ class DomUpdates {
     ${instruction.instruction}</li>`)
     })
   }
-
   displayTagsInRecipeInfo(recipeObject, tagsSpan) {
     recipeObject.tags.forEach(tag => {
       tagsSpan.insertAdjacentHTML('beforebegin', `<li>
         ${tag}</li>`);
     });
   }
-
   displayPantryHTML(user, cardArea) {
     cardArea.innerHTML = '';
     user.pantry.contents.forEach(ingredient => {
@@ -56,7 +51,6 @@ class DomUpdates {
       cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
     })
   }
-
   displayShoppingList(user, cardArea) {
     cardArea.innerHTML = '';
     user.shoppingList.forEach((ingredient) => {
@@ -66,5 +60,4 @@ class DomUpdates {
   }
   
 }
-
 export default DomUpdates;

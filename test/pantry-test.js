@@ -71,7 +71,9 @@ describe('Pantry', () => {
   });
 
   it('Should give an Error if a new Pantry has the wrong user arguements', () => {
-    expect(() => { new Pantry(aUser) }).to.throw(Error);
+    expect(() => {
+      new Pantry(aUser) 
+    }).to.throw(Error);
   });
   
   it('Should be able to check ingredients in User/s pantry for a given recipe', () => {
@@ -97,12 +99,14 @@ describe('Pantry', () => {
  
     }]
 
-    const checkIng = pantry.checkRecipeStatus(missingIngredientsWithPrice);
-    
-    expect(checkIng).to.deep.eql(missingIngredientsWithPrice);
+    pantry.checkPantry();
+    console.log(pantry.missingIngredients)
+    expect(pantry.missingIngredients).to.deep.eql(missingIngredientsWithPrice);
   });
 
   it('If no recipe ingredients are given then the method checkPantry should give an Error', () => {
-    expect(() => { pantry.checkPantry() }).to.throw(Error);
+    expect(() => {
+      pantry.checkPantry() 
+    }).to.throw(Error);
   });
 })
