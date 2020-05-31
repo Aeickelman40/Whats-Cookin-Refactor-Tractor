@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable max-len */
 import { expect } from 'chai';
 
@@ -8,9 +9,29 @@ import ingredientsTestData from '../src/test-data/ingredients-test-data.js';
 
 describe('Pantry', () => {
 
-  let pantry, user1, recipeIngredients;
+  let user1, pantryContents, missingIngredientPantry, recipeIngredients, extraIngredientRecipe, missingIngredientsWithPrice;
 
   beforeEach(() => {
+    extraIngredientRecipe = [{
+      "name": "instant vanilla pudding mix",
+      "id": 19206,
+      "quantity": {
+        "amount": 1,
+        "unit": "Tbsp"
+      }
+    }]
+
+    missingIngredientsWithPrice = [{
+      "estimatedCostInCents": 660,
+      "id": 19206,
+      "name": "instant vanilla pudding mix"
+
+    }]
+
+    missingIngredientPantry = [{
+      'ingredient': 19206,
+      'amount': 1
+    }]
     user1 = new User(1, 'Boba', [
       {
         'ingredient': 20081,
@@ -24,6 +45,19 @@ describe('Pantry', () => {
         'ingredient': 1123,
         'amount': 3
       }])
+    pantryContents = [
+      {
+        'ingredient': 20081,
+        'amount': 1
+      },
+      {
+        'ingredient': 18372,
+        'amount': 1
+      },
+      {
+        'ingredient': 1123,
+        'amount': 3
+      }]
     recipeIngredients = [
       {
         name: 'all purpose flour',
@@ -51,7 +85,7 @@ describe('Pantry', () => {
       }
     ]
 
-    pantry = new Pantry(user1, user1[2]);
+    //pantry = new Pantry(user1, user1[2]);
   });
 
   it('Should be a function', () => {
@@ -59,15 +93,12 @@ describe('Pantry', () => {
   });
 
   it('Should be an instance of a Pantry', () => {
-    expect(pantry).to.be.an.instanceOf(Pantry);
+    expect(user1.pantry).to.be.an.instanceOf(Pantry);
   });
 
-  it('Should be able to hold user data', () => {
-    expect(pantry.user).to.equal(user1);
-  });
+  it('Should be able to hold pantry contents for a user', () => {
 
-  it('Should be able to hold user data', () => {
-    expect(pantry.contents).to.deep.equal(user1[2]);
+    expect(user1.pantry.contents).to.deep.equal(pantryContents);
   });
 
   it('Should give an Error if a new Pantry has the wrong user arguements', () => {
@@ -77,36 +108,24 @@ describe('Pantry', () => {
   });
   
   it('Should be able to check ingredients in User/s pantry for a given recipe', () => {
-    const checkIng = pantry.checkRecipeStatus(recipeIngredients);
+    const checkIng = user1.pantry.checkRecipeStatus(recipeIngredients);
 
     expect(checkIng).to.eql('You have the ingredients!');
   });
 
   it('Should inform User if they lack required ingredients for a given recipe', () => {
-    let extraIngredientRecipe = [{
-      "name": "instant vanilla pudding mix",
-      "id": 19206,
-      "quantity": {
-        "amount": 1,
-        "unit": "Tbsp"
-      }
-    }]
 
-    let missingIngredientsWithPrice = [{
-      "estimatedCostInCents": 660,
-      "id": 19206,
-      "name": "instant vanilla pudding mix"
- 
-    }]
-
-    pantry.checkPantry();
-    console.log(pantry.missingIngredients)
-    expect(pantry.missingIngredients).to.deep.eql(missingIngredientsWithPrice);
+    user1.pantry.checkRecipeStatus(extraIngredientRecipe)
+    expect(user1.pantry.checkPantry()).to.deep.eql(missingIngredientsWithPrice);
   });
 
-  it('If no recipe ingredients are given then the method checkPantry should give an Error', () => {
-    expect(() => {
-      pantry.checkPantry() 
-    }).to.throw(Error);
+  it('should be able to add missing Ingredients to a users pantry contents', () => {
+    //user1.pantry.checkRecipeStatus(extraIngredientRecipe)
+    //console.log(user1.pantry.contents)
+    //user1.pantry.moveMissingIngredientsToContents()
+    let totalPantry = user1.pantry.contents.concat(missingIngredientPantry)
+    console.log('user1.pantry.contents', user1.pantry.contents)
+    console.log('totalPantry', totalPantry)
+    expect(user1.pantry.contents).to.deep.eql(totalPantry)
   });
 })
