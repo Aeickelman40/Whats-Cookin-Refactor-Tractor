@@ -2,7 +2,6 @@
 import './css/base.scss';
 import './css/styles.scss';
 import fetchData from './allData.js';
-import Pantry from './pantry';
 import Recipe from './recipe';
 import User from './user';
 import Cookbook from './cookbook';
@@ -15,6 +14,7 @@ const data = {
   recipeData: null
 }
 
+const userName = document.querySelector('.user-name');
 const favButton = document.querySelector('.view-favorites');
 const mealButton = document.querySelector('.view-meals');
 const homeButton = document.querySelector('.home');
@@ -33,7 +33,7 @@ mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
 pantryButton.addEventListener('click', () => domUpdates.displayPantryHTML(user, cardArea));
-shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingList(user, cardArea));
+shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingListToDOM(user, cardArea));
 
 window.onload = onStartup;
 
@@ -49,11 +49,12 @@ function onStartup() {
       instantiateClasses(data);
       addRecipesInfo();
       populateCards(cookbook.recipes);
-      greetUser();
+      domUpdates.greetUserOnDOM(user, userName)
   
     }) 
     .catch(err => console.log(err.message)) 
 }
+
 function instantiateClasses() {
   let userId = 28;
   cookbook = new Cookbook(data.recipeData);
@@ -63,38 +64,17 @@ function instantiateClasses() {
 
 function addRecipe(event) {
   let recipeToAdd = data.recipeData.find(recipe =>recipe.id === Number(event.target.id));
-
   user.addToMealList(recipeToAdd);
 }
 
 function displayAddedMeals() {
-  if (cardArea.classList.contains('all')) {
-    cardArea.classList.remove('all');
-  }
-  if (!user.mealList.length) {
-    mealButton.innerHTML = 'You have no meals yet';
-  } else {
-    cardArea.innerHTML = '';
-  }
+  domUpdates.displayAddedMealsToDOM(user, cardArea, mealButton);
   populateCards(user.mealList);
 }
 
 function viewFavorites() {
-  if (cardArea.classList.contains('all')) {
-    cardArea.classList.remove('all')
-  }
-  if (!user.favoriteRecipes.length) {
-    favButton.innerHTML = 'You have no favorites!';
-  } else {
-    favButton.innerHTML = 'Refresh Favorites'
-    cardArea.innerHTML = '';
-  }
+  domUpdates.displayFavoritesOnDOM(user, cardArea, favButton);
   populateCards(user.favoriteRecipes);
-}
-
-function greetUser() {
-  const userName = document.querySelector('.user-name');
-  userName.innerHTML = user.name;
 }
 
 function favoriteCard(event) {
@@ -104,15 +84,7 @@ function favoriteCard(event) {
     }
   })
   specificRecipe.favorited = true;
-  
-  if (!event.target.classList.contains('favorite-active')) {
-    event.target.classList.add('favorite-active');
-    favButton.innerHTML = 'View Favorites';
-    user.addToFavorites(specificRecipe);
-  } else if (event.target.classList.contains('favorite-active')) {
-    event.target.classList.remove('favorite-active');
-    user.removeFromFavorites(specificRecipe)
-  }
+  domUpdates.updateFavoriteIcon(favButton, user, specificRecipe, event.target);
 }
 
 function cardButtonConditionals(event) {
@@ -169,6 +141,8 @@ function populateCards(recipes) {
   }
   recipes.forEach(recipe => {
     domUpdates.populateCardsHTML(cardArea, recipe);
+    // let target = document.querySelector(`.favorite${recipe.id}`);
+    // domUpdates.updateFavoriteIcon(favButton, user, recipe, target);
   })
   // Why call getFavorites at the end of this?
   getFavorites();
