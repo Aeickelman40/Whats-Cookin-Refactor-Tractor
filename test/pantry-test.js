@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Pantry from '../src/pantry.js';
 import User from '../src/user.js';
 // import userPantryData from '../src/data/user.js';
-import ingredientsData from '../src/data/ingredients.js';
+import ingredientsTestData from '../src/test-data/ingredients-test-data.js';
 
 describe('Pantry', () => {
 
@@ -75,7 +75,7 @@ describe('Pantry', () => {
   });
   
   it('Should be able to check ingredients in User/s pantry for a given recipe', () => {
-    const checkIng = pantry.checkPantry(recipeIngredients);
+    const checkIng = pantry.checkRecipeStatus(recipeIngredients);
 
     expect(checkIng).to.eql('You have the ingredients!');
   });
@@ -91,12 +91,15 @@ describe('Pantry', () => {
     }]
 
     let missingIngredientsWithPrice = [{
+      "estimatedCostInCents": 660,
       "id": 19206,
-      "name": "instant vanilla pudding mix",
-      "estimatedCostInCents": 660
+      "name": "instant vanilla pudding mix"
+ 
     }]
+
+    const checkIng = pantry.checkRecipeStatus(missingIngredientsWithPrice);
     
-    expect(pantry.checkPantry(extraIngredientRecipe)).to.eql(missingIngredientsWithPrice);
+    expect(checkIng).to.deep.eql(missingIngredientsWithPrice);
   });
 
   it('If no recipe ingredients are given then the method checkPantry should give an Error', () => {

@@ -1,15 +1,15 @@
 import { expect } from 'chai';
 
 import Recipe from '../src/recipe.js';
-import recipeData from '../src/data/recipes.js';
-import ingredientsData from '../src/data/ingredients.js';
+import recipeTestData from '../src/test-data/recipes-test-data.js';
+import ingredientsTestData from '../src/test-data/ingredients-test-data.js';
 
 describe('Recipe', () => {
 
   let recipe;
 
   beforeEach(() => {
-    recipe = new Recipe(recipeData[0], ingredientsData);
+    recipe = new Recipe(recipeTestData[0], ingredientsTestData);
   });
 
   it('Should be a function', () => {
@@ -29,19 +29,19 @@ describe('Recipe', () => {
   });
 
   it('Should have ingredients needed', () => {
-    expect(recipe.ingredients).to.equal(recipeData[0].ingredients);
+    expect(recipe.ingredients).to.equal(recipeTestData[0].ingredients);
   });
 
   it('Should have instructions for the recipe', () => {
-    expect(recipe.instructions).to.equal(recipeData[0].instructions);
+    expect(recipe.instructions).to.equal(recipeTestData[0].instructions);
   });
 
   it('Should have tags that the recipe falls under', () => {
-    expect(recipe.tags).to.equal(recipeData[0].tags);
+    expect(recipe.tags).to.equal(recipeTestData[0].tags);
   });
 
   it('Should hold ingredient data', () => {
-    expect(recipe.ingredientsData).to.equal(ingredientsData);
+    expect(recipe.ingredientsData).to.equal(ingredientsTestData);
   });
 
   it('Should be able to calculate the cost of its ingredients', () => {

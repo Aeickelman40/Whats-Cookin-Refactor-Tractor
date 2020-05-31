@@ -36,8 +36,8 @@ class User {
       });
     });
   }
-  addToMealList(recipe) {
 
+  addToMealList(recipe) {
     if (typeof recipe !== 'object') {
       this.mealList.push(null);
       return;
@@ -54,7 +54,6 @@ class User {
     }
   }
 }
-
 
 export default User;
 
