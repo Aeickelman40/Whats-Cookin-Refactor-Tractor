@@ -2,10 +2,10 @@ import Pantry from './pantry';
 import Recipe from './recipe';
 
 class User {
-  constructor(id, name, contents) {
+  constructor(id, name, contents, data) {
     this.id = id;
     this.name = name;
-    this.pantry = new Pantry (this, contents);
+    this.pantry = new Pantry ( contents, data);
     this.favoriteRecipes = [];
     this.mealList = [];
     this.shoppingList = [];
@@ -43,14 +43,14 @@ class User {
       return;
     } else if (!this.mealList.includes(recipe) && this.pantry.checkRecipeStatus(recipe.ingredients) === 'You have the ingredients!') {
       this.mealList.push(recipe);
-      console.log(this.mealList);
+      // console.log(this.mealList);
     } else if (!this.mealList.includes(recipe)) {
       let tempIngredients = this.pantry.checkPantry();
       console.log( 'tempIngredients', tempIngredients)
       let newIngredients = this.shoppingList.concat(tempIngredients);
       let uniqIngredients = [...new Set(newIngredients)];
       this.shoppingList = uniqIngredients;
-      console.log(this.shoppingList)
+      // console.log(this.shoppingList)
     }
   }
 }
