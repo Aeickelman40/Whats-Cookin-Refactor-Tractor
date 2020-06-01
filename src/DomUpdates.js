@@ -52,7 +52,7 @@ class DomUpdates {
   displayPantryHTML(user, cardArea) {
     cardArea.innerHTML = '';
     user.pantry.contents.forEach(ingredient => {
-      let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
+      let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount.toFixed(2)} ${ingredient.unit}</li>`
       cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
     })
   }

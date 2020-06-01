@@ -8,6 +8,7 @@ import Cookbook from './cookbook';
 import DomUpdates from './DomUpdates';
 
 
+
 const data = {
   wcUsersData: null,
   ingredientsData: null,
@@ -55,10 +56,11 @@ function onStartup() {
     .catch(err => console.log(err.message)) 
 }
 
-function instantiateClasses() {
+function instantiateClasses(data) {
   let userId = 28;
   cookbook = new Cookbook(data.recipeData);
-  user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry);
+  user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry, data);
+  // console.log(user)
   domUpdates = new DomUpdates();
 }
 

@@ -1,31 +1,34 @@
-import ingredientsData from "./test-data/ingredients-test-data";
 
 class Pantry {
-  constructor(user, contents) {
-    //this.user = user;
+  constructor(contents, data) {
+    this.data = data;
     this.contents = contents;
     this.missingIngredients = []
   }
 
+
   checkPantry() {
     return this.missingIngredients.map(ingredient => {
       let tempEstimatedCost;
-      ingredientsData.find(specificIngredient => {
+      this.data.ingredientsData.find(specificIngredient => {
         if (specificIngredient.id === ingredient.id) {
           tempEstimatedCost = specificIngredient.estimatedCostInCents
         }
       })
-      return {
-        estimatedCostInCents: tempEstimatedCost,
-        id: ingredient.id,
-        name: ingredient.name 
-      }
+      return this.translateIngredient(tempEstimatedCost, ingredient);
     })
+  }
+
+  translateIngredient(tempEstimatedCost, ingredient) {
+    return {
+      estimatedCostInCents: tempEstimatedCost,
+      id: ingredient.id,
+      name: ingredient.name
+    }
   }
 
   checkRecipeStatus(recipeIngredients) {
     let counter = 0;
-
     recipeIngredients.forEach(recipeIngredient => {
       this.contents.forEach(pantryItem => {
         if (pantryItem.ingredient === recipeIngredient.id) {
