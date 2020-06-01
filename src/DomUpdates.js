@@ -3,7 +3,8 @@ class DomUpdates {
     //tried setting querySelectors as properties, didn't work
     //this.ingredientsSpan = document.querySelector('.ingredients');
   }
-  returnDirectionsInnerHTML(cardArea , recipeObject, costInDollars) {
+
+  returnDirectionsInnerHTML(cardArea, recipeObject, costInDollars) {
     cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
     <p class='all-recipe-info'>
     <strong>It will cost: </strong><span class='cost recipe-info'>
@@ -14,6 +15,7 @@ class DomUpdates {
     <strong> Tags: </strong><ol><span class='recipe-tags recipe-info'></span></ol>
     <p>`
   }
+  
   populateCardsHTML(cardArea, recipe) {
     cardArea.insertAdjacentHTML('afterbegin', 
       `<section id='${recipe.id}'class='card'>
@@ -27,6 +29,7 @@ class DomUpdates {
           src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
     </section>`)
   }
+
   displayIngredientsInRecipeInfo(recipeObject, ingredientsSpan, instructionsSpan) {
     recipeObject.ingredients.forEach(ingredient => {
       ingredientsSpan.insertAdjacentHTML('afterbegin', `<ul><li>
@@ -38,12 +41,14 @@ class DomUpdates {
     ${instruction.instruction}</li>`)
     })
   }
+
   displayTagsInRecipeInfo(recipeObject, tagsSpan) {
     recipeObject.tags.forEach(tag => {
       tagsSpan.insertAdjacentHTML('beforebegin', `<li>
         ${tag}</li>`);
     });
   }
+
   displayPantryHTML(user, cardArea) {
     cardArea.innerHTML = '';
     user.pantry.contents.forEach(ingredient => {
@@ -51,13 +56,63 @@ class DomUpdates {
       cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
     })
   }
-  displayShoppingList(user, cardArea) {
+
+  displayShoppingListToDOM(user, cardArea) {
     cardArea.innerHTML = '';
     user.shoppingList.forEach((ingredient) => {
       let listHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
       cardArea.insertAdjacentHTML('afterbegin', listHtml)
     })
   }
+
+  displayAddedMealsToDOM(user, cardArea, mealButton) {
+    if (cardArea.classList.contains('all')) {
+      cardArea.classList.remove('all');
+    }
+    if (!user.mealList.length) {
+      mealButton.innerHTML = 'You have no meals yet';
+    } else {
+      cardArea.innerHTML = '';
+    }
+  }
+
+  displayFavoritesOnDOM(user, cardArea, favButton) {
+    if (cardArea.classList.contains('all')) {
+      cardArea.classList.remove('all')
+    }
+    if (!user.favoriteRecipes.length) {
+      favButton.innerHTML = 'You have no favorites!';
+    } else {
+      favButton.innerHTML = 'Refresh Favorites'
+      cardArea.innerHTML = '';
+    }
+  }
+
+  greetUserOnDOM(user, userName) {
+    userName.innerHTML = user.name;
+  }
+
+  updateFavoriteIcon(favButton, user, specificRecipe, target) {
+    // debugger
+    if (!target.classList.contains('favorite-active')) {
+      target.classList.add('favorite-active');
+      favButton.innerHTML = 'View Favorites';
+      user.addToFavorites(specificRecipe);
+    } else if (target.classList.contains('favorite-active')) {
+      target.classList.remove('favorite-active');
+      user.removeFromFavorites(specificRecipe)
+    }
+    // debugger
+    // if (!specificRecipe.favorited) {
+    //   target.classList.remove('favorite-active');
+    //   user.removeFromFavorites(specificRecipe);
+    // } else if (specificRecipe.favorited !== undefined && ) {
+    //   target.classList.add('favorite-active');
+    //   favButton.innerHTML = 'View Favorites';
+    //   user.addToFavorites(specificRecipe);
+    // }
+  }
+
   
 }
 export default DomUpdates;
