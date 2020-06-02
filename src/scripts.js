@@ -34,7 +34,7 @@ favButton.addEventListener('click', viewFavorites);
 mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
-buyIngredientsButton.addEventListener('click', addMissingIngredientsToPantry);
+buyIngredientsButton.addEventListener('click', addMissingIngredientsToPantryHelper);
 pantryButton.addEventListener('click', () => domUpdates.displayPantryHTML(user, cardArea));
 shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingListToDOM(user, cardArea));
 
@@ -56,31 +56,58 @@ function onStartup() {
       domUpdates.greetUserOnDOM(user, userName)
   
     }) 
-    .catch(err => console.log(err.message)) 
+    .catch(err => console.log(err.message))
 }
 
-function addMissingIngredientsToPantry() {
+function addMissingIngredientsToPantryHelper() {
+  user.pantry.missingIngredients.forEach(missingIngredient => 
+    addMissingIngredientsToPantry(29, missingIngredient.id, missingIngredient.quantity.amount))
+  resetShoppingList();
+}
+
+function addMissingIngredientsToPantry(userID, ingredientID, ingredientModification) {
   fetch("https://fe-apps.herokuapp.com/api/v1/whats-cookin/1911/users/wcUsersData", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      "userID": 27,
-      "ingredientID": 11282,
-      "ingredientModification": 3
+      userID,
+      ingredientID,
+      ingredientModification
     }),
   })
     .then(response => response.json())
     .then(json => {
       console.log('json', json)
     })
-    .catch(err => console.log('Request failure: ', error));
+    .catch(err => console.log('Request failure: ', err));
 }
 
-// function cookMeal() {
+function resetShoppingList() {
+  user.pantry.missingIngredients = [];
+  user.shoppingList = [];
+  domUpdates.displayShoppingListToDOM(user, cardArea);
+}
 
-// }
+function cookMeal(userID, ingredientID, ingredientModification) {
+  fetch("https://fe-apps.herokuapp.com/api/v1/whats-cookin/1911/users/wcUsersData", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      userID,
+      ingredientID,
+      ingredientModification: -ingredientModification
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      console.log('json', json)
+    })
+    .catch(err => console.log('Request failure: ', err));
+}
 
 function instantiateClasses(data) {
   let userId = 28;
