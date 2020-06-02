@@ -9,6 +9,7 @@ class User {
     this.favoriteRecipes = [];
     this.mealList = [];
     this.shoppingList = [];
+    this.translatedShoppingList = [];
   }
 
   addToFavorites(recipe) {
@@ -49,7 +50,12 @@ class User {
       let newIngredients = this.shoppingList.concat(tempIngredients);
       let uniqIngredients = [...new Set(newIngredients)];
       this.shoppingList = uniqIngredients;
-      // console.log(this.shoppingList)
+      let translatedIngredients = recipe.ingredients.map(ingredient => {
+        return { ingredient: ingredient.id, amount: ingredient.quantity.amount, name: ingredient.name, unit: ingredient.quantity.unit}
+      })
+      this.translatedShoppingList = this.translatedShoppingList.concat(translatedIngredients)
+      console.log('this.translatedShoppingList', this.translatedShoppingList);
+
     }
   }
 }
