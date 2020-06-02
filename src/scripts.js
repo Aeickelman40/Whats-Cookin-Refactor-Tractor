@@ -23,6 +23,7 @@ const pantryButton = document.querySelector('.view-pantry');
 const shoppingListButton = document.querySelector('.view-shopping-list')
 const searchButton = document.querySelector('.search-button');
 const cardArea = document.querySelector('.all-cards');
+const buyIngredientsButton = document.querySelector('.buy-ingredients-button');
 let cookbook;
 let searchInput = document.querySelector('#search-input');
 let user;
@@ -33,8 +34,10 @@ favButton.addEventListener('click', viewFavorites);
 mealButton.addEventListener('click', displayAddedMeals);
 cardArea.addEventListener('click', cardButtonConditionals);
 searchButton.addEventListener('click', filterRecipesBySearch);
+buyIngredientsButton.addEventListener('click', addMissingIngredientsToPantry);
 pantryButton.addEventListener('click', () => domUpdates.displayPantryHTML(user, cardArea));
 shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingListToDOM(user, cardArea));
+
 
 window.onload = onStartup;
 
@@ -55,6 +58,29 @@ function onStartup() {
     }) 
     .catch(err => console.log(err.message)) 
 }
+
+function addMissingIngredientsToPantry() {
+  fetch("https://fe-apps.herokuapp.com/api/v1/whats-cookin/1911/users/wcUsersData", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "userID": 27,
+      "ingredientID": 11282,
+      "ingredientModification": 3
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      console.log('json', json)
+    })
+    .catch(err => console.log('Request failure: ', error));
+}
+
+// function cookMeal() {
+
+// }
 
 function instantiateClasses(data) {
   let userId = 28;
