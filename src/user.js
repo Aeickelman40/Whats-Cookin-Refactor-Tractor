@@ -46,7 +46,6 @@ class User {
       // console.log(this.mealList);
     } else if (!this.mealList.includes(recipe)) {
       let tempIngredients = this.pantry.checkPantry();
-      console.log( 'tempIngredients', tempIngredients)
       let newIngredients = this.shoppingList.concat(tempIngredients);
       let uniqIngredients = [...new Set(newIngredients)];
       this.shoppingList = uniqIngredients;

@@ -41,6 +41,7 @@ class Pantry {
     if (counter === recipeIngredients.length) {
       return 'You have the ingredients!';
     }
+    console.log(this.missingIngredients)
   }
 
   moveMissingIngredientsToContents() {
