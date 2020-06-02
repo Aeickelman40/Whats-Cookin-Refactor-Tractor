@@ -12,7 +12,7 @@ import DomUpdates from './DomUpdates';
 const data = {
   wcUsersData: null,
   ingredientsData: null,
-  recipeData: null
+  recipeData: null,
 }
 
 const userName = document.querySelector('.user-name');
@@ -79,15 +79,18 @@ function addMissingIngredientsToPantry(userID, ingredientID, ingredientModificat
   })
     .then(response => response.json())
     .then(json => {
-      console.log('json', json)
+      console.log('Request success: ', json)
     })
     .catch(err => console.log('Request failure: ', err));
 }
 
 function resetShoppingList() {
+  window.alert('You bought the ingredients! You can view them in your pantry');
   user.pantry.missingIngredients = [];
   user.shoppingList = [];
+  domUpdates.displayPantryHTML(user, cardArea)
   domUpdates.displayShoppingListToDOM(user, cardArea);
+  user.pantry.moveMissingIngredientsToContents(user);
 }
 
 function cookMeal(userID, ingredientID, ingredientModification) {
@@ -104,16 +107,15 @@ function cookMeal(userID, ingredientID, ingredientModification) {
   })
     .then(response => response.json())
     .then(json => {
-      console.log('json', json)
+      console.log('Request success: ', json)
     })
     .catch(err => console.log('Request failure: ', err));
 }
 
-function instantiateClasses(data) {
-  let userId = 28;
+function instantiateClasses(data, userID) {
+  let userId = data.userID || Math.floor(Math.random() * (48));
   cookbook = new Cookbook(data.recipeData);
   user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry, data);
-  // console.log(user)
   domUpdates = new DomUpdates();
 }
 

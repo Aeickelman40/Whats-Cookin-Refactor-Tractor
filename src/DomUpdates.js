@@ -46,17 +46,16 @@ class DomUpdates {
   }
 
   displayPantryHTML(user, cardArea) {
-    cardArea.innerHTML = '';
+    cardArea.innerHTML = '<h2> Pantry: </h2>';
     user.pantry.contents.forEach(ingredient => {
       let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount.toFixed(2)} ${ingredient.unit}</li>`
-      cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
+      cardArea.insertAdjacentHTML("beforeend", ingredientHtml);
     })
   }
 
   displayShoppingListToDOM(user, cardArea) {
-    cardArea.innerHTML = '';
+    cardArea.innerHTML = '<h2> Shopping List: </h2>';
     user.shoppingList.forEach((ingredient) => {
-      console.log(ingredient)
       let listHtml = `<li> ${ingredient.name}, $${(ingredient.estimatedCostInCents / 100).toFixed(2)} </li>`
       cardArea.insertAdjacentHTML('beforeend', listHtml)
     })
@@ -90,7 +89,6 @@ class DomUpdates {
   }
 
   updateFavoriteIcon(favButton, user, specificRecipe, target) {
-    // debugger
     if (!target.classList.contains('favorite-active')) {
       target.classList.add('favorite-active');
       favButton.innerHTML = 'View Favorites';
@@ -99,15 +97,6 @@ class DomUpdates {
       target.classList.remove('favorite-active');
       user.removeFromFavorites(specificRecipe)
     }
-    // debugger
-    // if (!specificRecipe.favorited) {
-    //   target.classList.remove('favorite-active');
-    //   user.removeFromFavorites(specificRecipe);
-    // } else if (specificRecipe.favorited !== undefined && ) {
-    //   target.classList.add('favorite-active');
-    //   favButton.innerHTML = 'View Favorites';
-    //   user.addToFavorites(specificRecipe);
-    // }
   }
 
   

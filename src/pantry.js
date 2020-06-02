@@ -33,8 +33,6 @@ class Pantry {
         }
       })
     })
-    console.log('counter', counter)
-    console.log('recipeIngredients', recipeIngredients)
     if (counter === recipeIngredients.length) {
       return 'You have the ingredients!';
     }
@@ -43,12 +41,13 @@ class Pantry {
         this.missingIngredients.push(recipeIngredient);
       }
     })
-    console.log('this.missingIngredients', this.missingIngredients)
+
   }
 
-  moveMissingIngredientsToContents() {
-    this.contents = this.contents.concat(this.missingIngredients);
+  moveMissingIngredientsToContents(user) {
+    this.contents = this.contents.concat(user.translatedShoppingList);
     this.missingIngredients = [];
+    user.translatedShoppingList = [];
   }
 }
 
