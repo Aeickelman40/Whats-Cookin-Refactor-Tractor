@@ -1,8 +1,4 @@
 class DomUpdates {
-  constructor() {
-    //tried setting querySelectors as properties, didn't work
-    //this.ingredientsSpan = document.querySelector('.ingredients');
-  }
 
   returnDirectionsInnerHTML(cardArea, recipeObject, costInDollars) {
     cardArea.innerHTML = `<h3>${recipeObject.name}</h3>
@@ -52,7 +48,7 @@ class DomUpdates {
   displayPantryHTML(user, cardArea) {
     cardArea.innerHTML = '';
     user.pantry.contents.forEach(ingredient => {
-      let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
+      let ingredientHtml = `<li> ${ingredient.name}, ${ingredient.amount.toFixed(2)} ${ingredient.unit}</li>`
       cardArea.insertAdjacentHTML("afterbegin", ingredientHtml);
     })
   }
