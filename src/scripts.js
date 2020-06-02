@@ -62,7 +62,7 @@ function onStartup() {
 function addMissingIngredientsToPantryHelper() {
   user.pantry.missingIngredients.forEach(missingIngredient => 
     addMissingIngredientsToPantry(29, missingIngredient.id, missingIngredient.quantity.amount))
-  // resetShoppingList();
+  resetShoppingList();
 }
 
 function addMissingIngredientsToPantry(userID, ingredientID, ingredientModification) {
@@ -86,6 +86,7 @@ function addMissingIngredientsToPantry(userID, ingredientID, ingredientModificat
 
 function resetShoppingList() {
   user.pantry.missingIngredients = [];
+  user.shoppingList = [];
   domUpdates.displayShoppingListToDOM(user, cardArea);
 }
 

@@ -56,7 +56,8 @@ class DomUpdates {
   displayShoppingListToDOM(user, cardArea) {
     cardArea.innerHTML = '';
     user.shoppingList.forEach((ingredient) => {
-      let listHtml = `<li> ${ingredient.name}, ${ingredient.amount} ${ingredient.unit}</li>`
+      console.log(ingredient)
+      let listHtml = `<li> ${ingredient.name}, $${(ingredient.estimatedCostInCents / 100).toFixed(2)} </li>`
       cardArea.insertAdjacentHTML('beforeend', listHtml)
     })
   }
