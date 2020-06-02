@@ -10,9 +10,7 @@ let cardArea;
 describe('DomUpdates', () => {
   beforeEach(() => {
     domUpdates = new DomUpdates();
-    global.document = {};
-    chai.spy.on(document, ['insertAdjacentHTML'], () => {});
-    //cardArea = document.querySelector('.all-cards')
+    chai.spy.on(domUpdates, 'populateCardsHTML', () => {});
   });
 
   it('Should be a function', () => {
@@ -23,16 +21,8 @@ describe('DomUpdates', () => {
     expect(domUpdates).to.be.an.instanceOf(DomUpdates);
   });
 
-  it.skip('Should call insertAdjacentHTML correctly', () => {
+  it.only('Should call populateCardsHTML correctly', () => {
     domUpdates.populateCardsHTML(cardArea, recipeTestData[0]);
-    expect(document.insertAdjacentHTML).to.have.been.called(1);
-  });
-
-  it.skip('Should be able to filter through its array by ingredients', () => {
-    expect(cookbook.findRecipe('yolk').length).to.equal(2);
-  });
-
-  it.skip('Should be able to filter through its array by name', () => {
-    expect(cookbook.findRecipe('Sesame Cookies').length).to.equal(1);
+    expect(domUpdates.populateCardsHTML).to.have.been.called(1);
   });
 });

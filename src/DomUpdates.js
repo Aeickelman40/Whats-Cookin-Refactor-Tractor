@@ -90,7 +90,6 @@ class DomUpdates {
   }
 
   updateFavoriteIcon(favButton, user, specificRecipe, target) {
-    // debugger
     if (!target.classList.contains('favorite-active')) {
       target.classList.add('favorite-active');
       favButton.innerHTML = 'View Favorites';
@@ -99,15 +98,6 @@ class DomUpdates {
       target.classList.remove('favorite-active');
       user.removeFromFavorites(specificRecipe)
     }
-    // debugger
-    // if (!specificRecipe.favorited) {
-    //   target.classList.remove('favorite-active');
-    //   user.removeFromFavorites(specificRecipe);
-    // } else if (specificRecipe.favorited !== undefined && ) {
-    //   target.classList.add('favorite-active');
-    //   favButton.innerHTML = 'View Favorites';
-    //   user.addToFavorites(specificRecipe);
-    // }
   }
 
   
