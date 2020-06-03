@@ -13,37 +13,36 @@ const data = {
   recipeData: null,
 }
 
-const userName = document.querySelector('.user-name');
-const favButton = document.querySelector('.view-favorites');
-const mealButton = document.querySelector('.view-meals');
-const homeButton = document.querySelector('.home');
-const pantryButton = document.querySelector('.view-pantry');
-const shoppingListButton = document.querySelector('.view-shopping-list')
-const searchButton = document.querySelector('.search-button');
-const cardArea = document.querySelector('.all-cards');
 const buyIngredientsButton = document.querySelector('.buy-ingredients-button');
-let cookbook;
-let searchInput = document.querySelector('#search-input');
-let user;
-let domUpdates;
+const cardArea = document.querySelector('.all-cards');
+const favButton = document.querySelector('.view-favorites');
+const homeButton = document.querySelector('.home');
+const mealButton = document.querySelector('.view-meals');
+const pantryButton = document.querySelector('.view-pantry');
+const searchButton = document.querySelector('.search-button');
+const searchInput = document.querySelector('#search-input');
+const shoppingListButton = document.querySelector('.view-shopping-list')
+const userName = document.querySelector('.user-name');
+let cookbook, user, domUpdates;
 
-homeButton.addEventListener('click', cardButtonConditionals);
-favButton.addEventListener('click', viewFavorites);
-mealButton.addEventListener('click', displayAddedMeals);
-cardArea.addEventListener('click', cardButtonConditionals);
-searchButton.addEventListener('click', filterRecipesBySearch);
+
 buyIngredientsButton.addEventListener('click', addMissingIngredientsToPantryHelper);
+cardArea.addEventListener('click', cardButtonConditionals);
+favButton.addEventListener('click', viewFavorites);
+homeButton.addEventListener('click', cardButtonConditionals);
+mealButton.addEventListener('click', displayAddedMeals);
+searchButton.addEventListener('click', filterRecipesBySearch);
 pantryButton.addEventListener('click', () => domUpdates.displayPantryHTML(user, cardArea));
-shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingListToDOM(user, cardArea));
+shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingListToDOM(user, cardArea, buyIngredientsButton));
 
 window.onload = onStartup;
 
 function onStartup() {
   fetchData() 
     .then(allData => {
-      data.wcUsersData = allData.wcUsersData;
       data.ingredientsData = allData.ingredientsData;
       data.recipeData = allData.recipeData;
+      data.wcUsersData = allData.wcUsersData;
     }) 
     .then( () => {
       addRecipeIngredientsDetails();
@@ -57,9 +56,13 @@ function onStartup() {
 }
 
 function addMissingIngredientsToPantryHelper() {
-  user.pantry.missingIngredients.forEach(missingIngredient => 
-    addMissingIngredientsToPantry(29, missingIngredient.id, missingIngredient.quantity.amount))
-  resetShoppingList();
+  if (user.pantry.missingIngredients.length) {
+    user.pantry.missingIngredients.forEach(missingIngredient => 
+      addMissingIngredientsToPantry(29, missingIngredient.id, missingIngredient.quantity.amount))
+    resetShoppingList();
+  } else {
+    buyIngredientsButton.innerText = 'Shopping Cart Empty';
+  }
 }
 
 function addMissingIngredientsToPantry(userID, ingredientID, ingredientModification) {
@@ -109,8 +112,8 @@ function cookMeal(userID, ingredientID, ingredientModification) {
     .catch(err => console.log('Request failure: ', err));
 }
 
-function instantiateClasses(data, userID) {
-  let userId = data.userID || Math.floor(Math.random() * (48));
+function instantiateClasses(data) {
+  let userId = Math.floor(Math.random() * (48));
   cookbook = new Cookbook(data.recipeData);
   user = new User(userId, data.wcUsersData[userId].name, data.wcUsersData[userId].pantry, data);
   domUpdates = new DomUpdates();
@@ -151,6 +154,7 @@ function cardButtonConditionals(event) {
   } else if (event.target.classList.contains('home')) {
     favButton.innerHTML = 'View Favorites';
     mealButton.innerHTML = "Meals to Cook";
+    buyIngredientsButton.innerText = 'Buy Ingredients';
     populateCards(cookbook.recipes);
     cardArea.classList.remove('all');
   } 
@@ -163,11 +167,11 @@ function displayDirections(event) {
     }
   })
   let recipeObject = new Recipe(newRecipeInfo, data.ingredientsData);
-  let cost = recipeObject.calculateCost()
-  let costInDollars = (cost / 100).toFixed(2)
+  let cost = recipeObject.calculateCost();
+  let costInDollars = (cost / 100).toFixed(2);
   cardArea.classList.add('all');
   domUpdates.returnDirectionsInnerHTML(cardArea, recipeObject, costInDollars);
-  displayRecipeInfo(recipeObject)
+  displayRecipeInfo(recipeObject);
 }
 
 function displayRecipeInfo(recipeObject) {
@@ -175,14 +179,14 @@ function displayRecipeInfo(recipeObject) {
   let instructionsSpan = document.querySelector('.instructions');
   let tagsSpan = document.querySelector('.recipe-tags');
 
-  domUpdates.displayIngredientsInRecipeInfo(recipeObject, ingredientsSpan, instructionsSpan)
+  domUpdates.displayIngredientsInRecipeInfo(recipeObject, ingredientsSpan, instructionsSpan);
   domUpdates.displayTagsInRecipeInfo(recipeObject, tagsSpan);
 }
 
 function getFavorites() {
   if (user.favoriteRecipes.length) {
     user.favoriteRecipes.forEach(recipe => {
-      document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active')
+      document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active');
     })
   }
 }
@@ -190,12 +194,10 @@ function getFavorites() {
 function populateCards(recipes) {
   cardArea.innerHTML = '';
   if (cardArea.classList.contains('all')) {
-    cardArea.classList.remove('all')
+    cardArea.classList.remove('all');
   }
   recipes.forEach(recipe => {
     domUpdates.populateCardsHTML(cardArea, recipe);
-    // let target = document.querySelector(`.favorite${recipe.id}`);
-    // domUpdates.updateFavoriteIcon(favButton, user, recipe, target);
   })
   getFavorites();
 }
@@ -210,7 +212,7 @@ function filterRecipesBySearch() {
     }
   })  
   let recipesByName = data.recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value.toLowerCase()));
-  let recipesByTag = data.recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()))
+  let recipesByTag = data.recipeData.filter(recipe => recipe.tags.includes(searchInput.value.toLowerCase()));
   let searchedRecipes = recipesByIngredient.concat(recipesByName, recipesByTag);
   let uniqueSearchedRecipes = [...new Set(searchedRecipes)];
   populateCards(uniqueSearchedRecipes);
@@ -224,7 +226,6 @@ function addRecipeIngredientsDetails() {
           recipeIngredient.name = ingredientFromData.name;
           ingredientFromData.unit = recipeIngredient.quantity.unit;
         }
-        
       })
     }))
 }
