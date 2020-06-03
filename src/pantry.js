@@ -3,7 +3,7 @@ class Pantry {
   constructor(contents, data) {
     this.data = data;
     this.contents = contents;
-    this.missingIngredients = []
+    this.missingIngredients = [];
   }
 
   checkPantry() {

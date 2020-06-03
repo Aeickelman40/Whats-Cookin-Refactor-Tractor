@@ -16,9 +16,6 @@ class Recipe {
         if (specificIngredient.id === ingredient.id) {
           costCounter += (Number(specificIngredient.estimatedCostInCents) *
           Number(ingredient.quantity.amount))
-
-          // console.log('ingredient.quantity.amount', ingredient.quantity.amount)
-          // console.log('specificIngredient.estimatedCostInCents', specificIngredient.estimatedCostInCents)
         }
       })
     });

@@ -1,11 +1,10 @@
 import Pantry from './pantry';
-import Recipe from './recipe';
 
 class User {
   constructor(id, name, contents, data) {
     this.id = id;
     this.name = name;
-    this.pantry = new Pantry ( contents, data);
+    this.pantry = new Pantry (contents, data);
     this.favoriteRecipes = [];
     this.mealList = [];
     this.shoppingList = [];
@@ -20,7 +19,7 @@ class User {
 
   removeFromFavorites(recipe) {
     const i = this.favoriteRecipes.indexOf(recipe);
-    this.favoriteRecipes.splice(i, 1)
+    this.favoriteRecipes.splice(i, 1);
   }
 
   filterFavorites(tag) {
