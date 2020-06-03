@@ -44,7 +44,6 @@ class User {
       return;
     } else if (!this.mealList.includes(recipe) && this.pantry.checkRecipeStatus(recipe.ingredients) === 'You have the ingredients!') {
       this.mealList.push(recipe);
-      // console.log(this.mealList);
     } else if (!this.mealList.includes(recipe)) {
       let tempIngredients = this.pantry.checkPantry();
       let newIngredients = this.shoppingList.concat(tempIngredients);
@@ -54,8 +53,6 @@ class User {
         return { ingredient: ingredient.id, amount: ingredient.quantity.amount, name: ingredient.name, unit: ingredient.quantity.unit}
       })
       this.translatedShoppingList = this.translatedShoppingList.concat(translatedIngredients)
-      console.log('this.translatedShoppingList', this.translatedShoppingList);
-
     }
   }
 }

@@ -7,8 +7,6 @@ import User from './user';
 import Cookbook from './cookbook';
 import DomUpdates from './DomUpdates';
 
-
-
 const data = {
   wcUsersData: null,
   ingredientsData: null,
@@ -37,7 +35,6 @@ searchButton.addEventListener('click', filterRecipesBySearch);
 buyIngredientsButton.addEventListener('click', addMissingIngredientsToPantryHelper);
 pantryButton.addEventListener('click', () => domUpdates.displayPantryHTML(user, cardArea));
 shoppingListButton.addEventListener('click', () => domUpdates.displayShoppingListToDOM(user, cardArea));
-
 
 window.onload = onStartup;
 
@@ -153,6 +150,7 @@ function cardButtonConditionals(event) {
     displayDirections(event);
   } else if (event.target.classList.contains('home')) {
     favButton.innerHTML = 'View Favorites';
+    mealButton.innerHTML = "Meals to Cook";
     populateCards(cookbook.recipes);
     cardArea.classList.remove('all');
   } 
@@ -170,11 +168,9 @@ function displayDirections(event) {
   cardArea.classList.add('all');
   domUpdates.returnDirectionsInnerHTML(cardArea, recipeObject, costInDollars);
   displayRecipeInfo(recipeObject)
-  
 }
 
 function displayRecipeInfo(recipeObject) {
-
   let ingredientsSpan = document.querySelector('.ingredients');
   let instructionsSpan = document.querySelector('.instructions');
   let tagsSpan = document.querySelector('.recipe-tags');
@@ -201,7 +197,6 @@ function populateCards(recipes) {
     // let target = document.querySelector(`.favorite${recipe.id}`);
     // domUpdates.updateFavoriteIcon(favButton, user, recipe, target);
   })
-  // Why call getFavorites at the end of this?
   getFavorites();
 }
 
