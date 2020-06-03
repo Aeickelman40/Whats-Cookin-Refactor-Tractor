@@ -21,7 +21,7 @@ describe('DomUpdates', () => {
     expect(domUpdates).to.be.an.instanceOf(DomUpdates);
   });
 
-  it.only('Should call populateCardsHTML correctly', () => {
+  it('Should call populateCardsHTML correctly', () => {
     domUpdates.populateCardsHTML(cardArea, recipeTestData[0]);
     expect(domUpdates.populateCardsHTML).to.have.been.called(1);
   });

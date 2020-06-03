@@ -111,21 +111,4 @@ describe('Pantry', () => {
 
     expect(checkIng).to.eql('You have the ingredients!');
   });
-
-  //   it.only('Should inform User if they lack required ingredients for a given recipe', () => {
-
-  //     user1.pantry.checkRecipeStatus(extraIngredientRecipe)
-  //     console.log(user1.pantry.checkPantry())
-  //     expect(user1.pantry.checkPantry()).to.deep.eql(missingIngredientsWithPrice);
-  //   });
-
-  it('should be able to add missing Ingredients to a users pantry contents', () => {
-    //user1.pantry.checkRecipeStatus(extraIngredientRecipe)
-    //console.log(user1.pantry.contents)
-    //user1.pantry.moveMissingIngredientsToContents()
-    let totalPantry = user1.pantry.contents.concat(missingIngredientPantry)
-    // console.log('user1.pantry.contents', user1.pantry.contents)
-    // console.log('totalPantry', totalPantry)
-    expect(user1.pantry.contents).to.deep.eql(totalPantry)
-  });
 })

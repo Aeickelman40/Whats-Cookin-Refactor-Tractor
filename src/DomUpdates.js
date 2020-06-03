@@ -98,7 +98,6 @@ class DomUpdates {
       user.removeFromFavorites(specificRecipe)
     }
   }
-
-  
 }
+
 export default DomUpdates;

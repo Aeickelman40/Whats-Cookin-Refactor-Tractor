@@ -6,7 +6,6 @@ class Pantry {
     this.missingIngredients = []
   }
 
-
   checkPantry() {
     return this.missingIngredients.map(ingredient => {
       let tempEstimatedCost = this.data.ingredientsData.find(specificIngredient => {
@@ -41,7 +40,6 @@ class Pantry {
         this.missingIngredients.push(recipeIngredient);
       }
     })
-
   }
 
   moveMissingIngredientsToContents(user) {
@@ -52,5 +50,3 @@ class Pantry {
 }
 
 export default Pantry;
-
-

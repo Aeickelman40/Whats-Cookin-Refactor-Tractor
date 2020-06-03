@@ -5,9 +5,9 @@
             border-radius: $radius;
   }
 
-// @mixin borders($px, $style, $color) {
-//     -webkit-border: $border-style;
-//        -moz-border: $border-style;
-//         -ms-border: $border-style;
-//             border: $border-style;
-// }
+@mixin font-size($font) {
+  -webkit-font-size: $font;
+       -moz-font-size: $font;
+        -ms-font-size: $font;
+          font-size: $font;
+}
