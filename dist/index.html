@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'>
+    <title>Whats Cookin</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap' rel='stylesheet'>
+  </head>
+  <body>
+    <header class='main-header'>
+      <h1>What's Cookin'</h1>
+      <p class='user-info'>Welcome, <span class='user-name'>User</span>!</p>
+      <label for='home-button' class='hidden'>Homepage button</label>
+      <button class='home navButton'>Home</button>
+      <button class='view-pantry navButton'>View Pantry</button>
+      <button class='view-shopping-list navButton'>View Shopping List</button>
+      <label for='buy-ingredients-button' class='hidden'>Buy Ingredients</label>
+      <button class='buy-ingredients-button navButton'>Buy Ingredients</button>
+      <label for='view-my-meals' class='hidden'>View My Meals</label>
+      <button id='view-my-meals' class=' view-meals navButton'>Meals to Cook</button> 
+      <label for='view-favorites-button' class='hidden'>View favorites</label>
+      <button id='view-favorites-button' class=' view-favorites navButton'>View Favorites</button>
+      <form class='search-bar'>
+      <label for='search-bar' class='hidden'>Search Bar</label>
+        <label for='search-button' class='hidden'>Click here to search here</label>
+        <button id='search-button' class='search-button'>
+          <img class='search-image' src='https://image.flaticon.com/icons/svg/660/660029.svg' alt='Search button'>
+        </button>
+        <label for='search-input' class='hidden'>Type search query here</label>
+          <input  id='search-input' type='text' placeholder='Search recipes by tag, ingredient or name...' value=''>
+      </form>
+    </header>
+    <main>
+    <section class='pantry-list hidden'>Pantry:
+    </section>
+      <section class='all-cards'>
+      </section>
+    </main>
+  <script type="text/javascript" src="main.bundle.js"></script></body>
+</html>
